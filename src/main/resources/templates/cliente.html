@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="ISO-8859-1">
-<title>Cadastro de Funcionario</title>
+<title>Cadastro de Cliente</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -19,7 +19,7 @@ html {
 
 <body>
 
-<h3>Cadastro de Funcionario</h3>
+<h3>Cadastro de Cliente</h3>
 
 
 <form action="" id="formCadastroUser">
@@ -30,7 +30,7 @@ html {
 </div>
 
 <div class="mb-3">
-  <label for="nome" class="form-label">Nome do Funcionario</label>
+  <label for="nome" class="form-label">Nome do Cliente</label>
   <input type="text" class="form-control" id="nome" placeholder="Informe o nome" required="required">
 </div>
 
@@ -40,13 +40,19 @@ html {
 </div>
 
 <div class="mb-3">
-  <label for="text" class="form-label">Cargo</label>
-  <input type="text" class="form-control" placeholder="Informe o cargo" id="cargo">
+  <label for="text" class="form-label">CPF</label>
+  <input type="text" class="form-control"  placeholder="Informe o cpf" id="cpf">
 </div>
 
 <div class="mb-3">
-  <label for="text" class="form-label">CPF</label>
-  <input type="text" class="form-control"  placeholder="Informe o cpf" id="cpf">
+  <label for="text" class="form-label">Endereco</label>
+  <input type="text" class="form-control"  placeholder="Informe o endereco" id="endereco">
+</div>
+
+
+<div class="mb-3">
+  <label for="text" class="form-label">Cidade</label>
+  <input type="text" class="form-control"  placeholder="Informe a cidade" id="cidade">
 </div>
 </form>
 
@@ -65,7 +71,7 @@ html {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de usuário</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Cliente</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -126,8 +132,8 @@ function deleteUser(id){
 	if(confirm('Deseja realmente deletar?')) {
 	 $.ajax({
 			method : "DELETE",
-			url : "funcionario/delete",
-			data : "iduser=" + id ,
+			url : "cliente/cadastro/delete",
+			data : "idcliente=" + id ,
 			success : function(response) {
 				
 				$('#'+ id).remove();
@@ -146,7 +152,7 @@ function deleteUser(id){
 	  if (nome != null && nome.trim() != ''){
 		  $.ajax({
 				method : "GET",
-				url : "funcionario/buscarPorNome",
+				url : "cliente/cadastro/buscarPorNome",
 				data : "name=" + nome ,
 				success : function(response) {
 					$('#tabelaresultados > tbody > tr').remove();
@@ -166,73 +172,33 @@ function deleteUser(id){
   function colocarEmEdicao(id) {  
 	  $.ajax({
 			method : "GET",
-			url : "funcionario/buscaruserid",
-			data : "iduser=" + id ,
+			url : "cliente/cadastro/buscarclienteid",
+			data : "idcliente=" + id ,
 			success : function(response) {
 
 				$("#id").val(response.id);
 				$("#nome").val(response.nome);
 				$("#dtnasc").val(response.dtnasc);
-				$("#cargo").val(response.cargo);
+				$("#endereco").val(response.endereco);
+				$("#cidade").val(response.cidade);
 				$("#cpf").val(response.cpf);
 				
 			}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro ao buscar usuario por id: " + xhr.responseText);
+			alert("Erro ao buscar cliente por id: " + xhr.responseText);
 		});
 	  
 	  
 	  
   }
-  function isCPF(cpf = 0){
-		console.log(cpf);
-		cpf  = cpf.replace(/\.|-/g,"");
-		console.log(cpf);
-		if(!validaPrimeiroDigito(cpf))
-		   return false;
-		if(!validaSegundoDigito(cpf))
-		   return false;
-
-		return true;	
-	}
-	var sum = 0;
-	
-	function validaPrimeiroDigito(cpf = null){
-		let fDigit = (sumFristDigit(cpf) * 10) % 11;
-		 	fDigit = (fDigit == 10 || fDigit == 11 ) ? 0 : fDigit; 
-		if(fDigit != cpf[9])
-			return false
-    	return true;
-	}
-	function validaSegundoDigito(cpf = null){
-		let sDigit = (sumSecondDigit(cpf) * 10) % 11;
-	     	sDigit = (sDigit == 10 || sDigit == 11 ) ? 0 : sDigit;
-
-		if(sDigit != cpf[10])
-			return false
-    	return true;
-	}
-
-
-	sumFristDigit = function(cpf, position=0, sum=0){
-		if(position > 9)
-			return 0;
-		return sum + sumFristDigit(cpf,position+1,cpf[position] * ((cpf.length-1)-position));
-	}
-
-	
-	sumSecondDigit = function(cpf, position=0, sum=0){
-		if(position > 10)
-			return 0;
-		return sum + sumSecondDigit(cpf,position+1,cpf[position] * ((cpf.length)-position));
-	}
-  
+ 
 	function salvarUsuario() {
 
 		var id = $("#id").val();
 		var nome = $("#nome").val();
 		var dtnasc = $("#dtnasc").val();
-		var cargo = $("#cargo").val();
+		var endereco = $("#endereco").val();
+		var cidade = $("#cidade").val();
 		var cpf = $("#cpf").val();
 		
 		if (nome == null || nome != null && nome.trim() == ''){
@@ -247,43 +213,43 @@ function deleteUser(id){
 			return;
 		}
 		
-		if (cargo == null || cargo != null && cargo.trim() == ''){
-			$("#cargo").focus();
-			alert('Informe o cargo');
+		if (endereco == null || endereco != null && endereco.trim() == ''){
+			$("#endereco").focus();
+			alert('Informe o endereco');
 			return;
 		}
 		
 		if ((cpf == null || cpf != null && cpf.trim()) == '' && isCPF(cpf)==false){
-			$("#login").focus();
+			$("#cpf").focus();
 			alert('cpf invalido');
 			return;
 		}
-
+		
+		if ((cidade == null || cidade != null && cidade.trim()) == ''){
+			$("#cidade").focus();
+			alert('Informe a cidade');
+			return;
+		}
 		
 		$.ajax({
 			method : "POST",
-			url : "funcionario/salvar",
+			url : "cliente/cadastro/salvar",
 			data : JSON.stringify({
 				id : id,
 				nome : nome,
 				dtnasc : dtnasc,
 				cpf : cpf,
-				cargo : cargo
+				endereco : endereco,
+				cidade : cidade
 			}),
 			contentType : "application/json; charset=utf-8",
 			success : function(response) {
-			    if(response.id == -99){
-			    	alert("Login duplicado");
-			    	$("#login").focus();
-			    	return
-			    }
-			
-					alert("Registro com sucesso!");
-					alert("Deseja alterar ou gravar outro usuario?");
-					document.getElementById('formCadastroUser').reset();
+				alert("Registro com sucesso!");
+				alert("Deseja alterar ou gravar outro cliente?");
+				document.getElementById('formCadastroUser').reset();
 			}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro ao salvar usuario: " + xhr.responseText);
+			alert("Erro ao salvar cliente: " + xhr.responseText);
 		});
 
 	}

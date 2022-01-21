@@ -1,9 +1,7 @@
 package br.com.mgk.Estagio.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +10,6 @@ import javax.persistence.SequenceGenerator;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.Builder;
 
 @Entity
 @SequenceGenerator(name = "seq_funcionario", sequenceName = "seq_funcionario", allocationSize = 1, initialValue = 1)

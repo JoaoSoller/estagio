@@ -9,7 +9,6 @@ import javax.persistence.SequenceGenerator;
 @Entity
 @SequenceGenerator(name = "seq_marca", sequenceName = "seq_marca", allocationSize = 1, initialValue = 1)
 public class Marca {
-private static final long serialVersionUID = 1L;
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_marca")

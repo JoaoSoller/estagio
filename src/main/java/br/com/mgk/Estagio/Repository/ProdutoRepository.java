@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import br.com.mgk.Estagio.model.Categoria;
 import br.com.mgk.Estagio.model.Marca;
 import br.com.mgk.Estagio.model.Produto;
-import br.com.mgk.Estagio.model.Usuario;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long>{

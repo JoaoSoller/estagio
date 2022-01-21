@@ -2,10 +2,6 @@ package br.com.mgk.Estagio.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
-
-import javax.annotation.Generated;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

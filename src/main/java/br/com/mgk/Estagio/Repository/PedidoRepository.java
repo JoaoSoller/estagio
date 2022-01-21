@@ -1,11 +1,11 @@
 package br.com.mgk.Estagio.Repository;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.mgk.Estagio.model.Compra;
+import br.com.mgk.Estagio.model.Pedido;
 
 @Repository
-public interface CompraRepository extends JpaRepository<Compra, Long>{
+public interface PedidoRepository  extends JpaRepository<Pedido, Long> {
+
 }

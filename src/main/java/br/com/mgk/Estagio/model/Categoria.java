@@ -9,7 +9,6 @@ import javax.persistence.SequenceGenerator;
 @Entity
 @SequenceGenerator(name = "seq_categoria", sequenceName = "seq_categoria", allocationSize = 1, initialValue = 1)
 public class Categoria {
-private static final long serialVersionUID = 1L;
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_categoria")

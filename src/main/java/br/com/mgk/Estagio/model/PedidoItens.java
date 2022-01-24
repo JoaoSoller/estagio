@@ -21,7 +21,7 @@ import javax.persistence.SequenceGenerator;
 		private Produto produto;
 		@ManyToOne
 		private Pedido pedido;
-		private Integer quantidade;
+		private Integer quantidade = 0;
 		private Double valorUnitario=0.0;
 		private Double desconto=0.0;
 		private Double acrescimo=0.0;

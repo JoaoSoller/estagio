@@ -19,8 +19,8 @@ public class CompraItens {
 	private Produto produto;
 	@ManyToOne
 	private Compra compra;
-	private double quantidade;
-	private double valor;
+	private double quantidade = 0;
+	private double valor = 0;
 	public long getId() {
 		return id;
 	}

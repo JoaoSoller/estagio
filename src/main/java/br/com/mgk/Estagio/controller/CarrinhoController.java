@@ -39,9 +39,9 @@ public class CarrinhoController {
 	private PedidoItensRepository repositorioPedidosItens;
 
 	private void calcularTotal() {
-		pedido.setValorTotal(0.);
+		pedido.setValorTotal(0.0);
 		for (PedidoItens it : pedidosItens) {
-			pedido.setValorTotal(pedido.getValorTotal() + it.getValorUnitario());
+			pedido.setValorTotal(pedido.getValorTotal() + (it.getValorUnitario() * it.getQuantidade()));
 		}
 	}
 	
@@ -57,19 +57,25 @@ public class CarrinhoController {
 	
 	@GetMapping("/alterarQuantidade/{id}/{acao}")
 	public String alterarQuantidade(@PathVariable Long id, @PathVariable Integer acao) {
-		ModelAndView mv = new ModelAndView("cliente/carrinho");
+		ModelAndView mv = new ModelAndView("/carrinho");
 
+		int a =0;
 		for (PedidoItens it : pedidosItens) {
 			if (it.getProduto().getId() == id) {
+				
 				// System.out.println(it.getValorTotal());
-				if (acao.equals(1)) {
+				if (acao.equals(1) && it.getProduto().getQuantidadeEstoque()> it.getQuantidade()) {
 					it.setQuantidade(it.getQuantidade() + 1);
+					it.setValorTotal(0.);
 					it.setValorTotal(it.getValorTotal() + (it.getQuantidade() * it.getValorUnitario()));
-				} else if (acao == 0) {
+					calcularTotal();
+				} else if (acao == 0 && it.getQuantidade() != 1) {
 					it.setQuantidade(it.getQuantidade() - 1);
+					it.setValorTotal(0.);
 					it.setValorTotal(it.getValorTotal() + (it.getQuantidade() * it.getValorUnitario()));
+					calcularTotal();
 				}
-				break;
+				a++;
 			}
 		}
 
@@ -82,6 +88,8 @@ public class CarrinhoController {
 		for (PedidoItens it : pedidosItens) {
 			if (it.getProduto().getId() == (id)) {
 				pedidosItens.remove(it);
+				it.setValorTotal(0.);
+				it.setValorTotal(it.getValorTotal() + (it.getQuantidade() * it.getValorUnitario()));
 				break;
 			}
 		}
@@ -98,15 +106,17 @@ public class CarrinhoController {
 		int controle = 0;
 		for (PedidoItens it : pedidosItens) {
 			
-			if (it.getProduto().getId() == produto.getId()) {
+			if (it.getProduto().getId() == produto.getId() && it.getProduto().getQuantidadeEstoque()> it.getQuantidade()) {
 				it.setQuantidade(it.getQuantidade() + 1);
-				it.setValorUnitario(0.);
+				it.setValorTotal(0.);
 				it.setValorTotal(it.getValorTotal() + (it.getQuantidade() * it.getValorUnitario()));
 				controle = 1;
-				break;
 			}
+			else 
+			if((it.getProduto().getId() == produto.getId() && it.getProduto().getQuantidadeEstoque()==it.getQuantidade()))
+				controle=2;	
 		}
-		if (controle == 0) {
+		if (controle == 0 && produto.getQuantidadeEstoque()>=0) {
 			PedidoItens item = new PedidoItens();
 			item.setProduto(produto);
 			item.setValorUnitario(produto.getPreco());
@@ -115,7 +125,7 @@ public class CarrinhoController {
 
 			pedidosItens.add(item);
 		}
-
+		controle = 0;
 		return "redirect:/carrinho";
 	}
 

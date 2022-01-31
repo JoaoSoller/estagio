@@ -54,12 +54,45 @@ html {
   <label for="text" class="form-label">Cidade</label>
   <input type="text" class="form-control"  placeholder="Informe a cidade" id="cidade">
 </div>
-</form>
+<div class="mb-3">
+  <label for="text" class="form-label">Login</label>
+  <input type="text" class="form-control"  placeholder="Informe o login" id="login">
+</div>
 
+<div class="mb-3">
+  <label for="text" class="form-label">Senha</label>
+  <input type="password" class="form-control"  placeholder="Informe a senha" id="senha">
+</div>
+</form>
 <button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
 <button type="button" class="btn btn-secondary" onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
 <button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pesquisar</button>
 <button type="button" class="btn btn-warning" onclick="botaoDeletarDaTela();">Deletar</button>
+
+<div class="col-6">
+			<form action="/finalizar/login" method="POST">
+				<div class="form-row">
+					
+					<div class="form-group col-md-12">
+						<label >Email</label> <input type="text" name="username"
+							class="form-control"  placeholder="Email"
+							autofocus="autofocus"  value="" />
+						<div class="invalid-feedback"></div>
+					</div>
+					
+					<div class="form-group col-md-12">
+							<label >Senha</label> <input type="password" name="password"
+								class="form-control" placeholder="Senha"
+								autofocus="autofocus" value="" />
+							<div class="invalid-feedback"></div>
+						</div>
+
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-sm">Efetuar Login</button>
+			</form>
+</div>
+
 
 
 
@@ -182,6 +215,8 @@ function deleteUser(id){
 				$("#endereco").val(response.endereco);
 				$("#cidade").val(response.cidade);
 				$("#cpf").val(response.cpf);
+				$("#senha").val(response.senha);
+				$("#login").val(response.login);
 				
 			}
 		}).fail(function(xhr, status, errorThrown) {
@@ -200,6 +235,8 @@ function deleteUser(id){
 		var endereco = $("#endereco").val();
 		var cidade = $("#cidade").val();
 		var cpf = $("#cpf").val();
+		var senha =	$("#senha").val();
+		var login =	$("#login").val();
 		
 		if (nome == null || nome != null && nome.trim() == ''){
 			$("#nome").focus();
@@ -240,7 +277,9 @@ function deleteUser(id){
 				dtnasc : dtnasc,
 				cpf : cpf,
 				endereco : endereco,
-				cidade : cidade
+				cidade : cidade,
+				senha : senha,
+				login : login
 			}),
 			contentType : "application/json; charset=utf-8",
 			success : function(response) {

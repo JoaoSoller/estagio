@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import br.com.mgk.Estagio.Repository.ClienteRepository;
 import br.com.mgk.Estagio.Repository.PedidoItensRepository;
 import br.com.mgk.Estagio.Repository.PedidoRepository;
@@ -14,11 +17,13 @@ import br.com.mgk.Estagio.model.PedidoItens;
 import br.com.mgk.Estagio.model.Produto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
-
 
 @Controller
 public class CarrinhoController {
@@ -45,6 +50,24 @@ public class CarrinhoController {
 		}
 	}
 	
+	private void buscarUsuarioLogado() {
+		Authentication autenticado = SecurityContextHolder.getContext().getAuthentication();
+		if (!(autenticado instanceof AnonymousAuthenticationToken)) {
+			String email = autenticado.getName();
+			cliente = repositorioCliente.buscarClienteEmail(email).get(0);
+		}
+	}
+	@GetMapping("/finalizar")
+	public ModelAndView finalizarCompra() {
+		buscarUsuarioLogado();
+		ModelAndView mv = new ModelAndView("finalizar");
+		calcularTotal();
+		// System.out.println(compra.getValorTotal());
+		mv.addObject("pedido", pedido);
+		mv.addObject("listaItens", pedidosItens);
+		mv.addObject("cliente", cliente);
+		return mv;
+	}
 	@GetMapping("/carrinho")
 	public ModelAndView chamarCarrinho() {
 		ModelAndView mv = new ModelAndView("/carrinho");
@@ -128,5 +151,4 @@ public class CarrinhoController {
 		controle = 0;
 		return "redirect:/carrinho";
 	}
-
 }

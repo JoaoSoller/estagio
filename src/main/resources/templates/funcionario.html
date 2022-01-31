@@ -48,6 +48,15 @@ html {
   <label for="text" class="form-label">CPF</label>
   <input type="text" class="form-control"  placeholder="Informe o cpf" id="cpf">
 </div>
+<div class="mb-3">
+  <label for="text" class="form-label">Login</label>
+  <input type="text" class="form-control"  placeholder="Informe o login" id="login">
+</div>
+
+<div class="mb-3">
+  <label for="text" class="form-label">Senha</label>
+  <input type="password" class="form-control"  placeholder="Informe a senha" id="senha">
+</div>
 </form>
 
 <button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
@@ -175,7 +184,8 @@ function deleteUser(id){
 				$("#dtnasc").val(response.dtnasc);
 				$("#cargo").val(response.cargo);
 				$("#cpf").val(response.cpf);
-				
+				$("#senha").val(response.senha);
+				$("#login").val(response.login);
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao buscar usuario por id: " + xhr.responseText);
@@ -234,7 +244,8 @@ function deleteUser(id){
 		var dtnasc = $("#dtnasc").val();
 		var cargo = $("#cargo").val();
 		var cpf = $("#cpf").val();
-		
+		var senha =	$("#senha").val();
+		var login =	$("#login").val();
 		if (nome == null || nome != null && nome.trim() == ''){
 			$("#nome").focus();
 			alert('Informe o nome');
@@ -268,7 +279,9 @@ function deleteUser(id){
 				nome : nome,
 				dtnasc : dtnasc,
 				cpf : cpf,
-				cargo : cargo
+				cargo : cargo,
+				senha : senha,
+				login : login
 			}),
 			contentType : "application/json; charset=utf-8",
 			success : function(response) {

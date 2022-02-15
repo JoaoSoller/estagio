@@ -174,13 +174,13 @@ function deleteUser(id){
 			url : "produto/cadastro/delete",
 			data : "idproduto=" + id ,
 			success : function(response) {
-				
+			
 				$('#'+ id).remove();
 				alert(response);	
 				document.getElementById('formCadastroUser').reset();	
 		}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro ao deletar produto por id: " + xhr.responseText);
+			alert("Este produto nao pode ser excluido");
 		});
 	}
 }

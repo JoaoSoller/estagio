@@ -110,14 +110,17 @@ public ModelAndView salvar(String acao, Compra compra, CompraItens item) {
 				compraRepository.saveAndFlush(compra);
 				for(CompraItens it: this.listaCompra) 
 				{
+					
 					it.setCompra(compra);
 					if(compra.getTotal()==null)
 						compra.setTotal(0.0);
 					compra.setTotal(compra.getTotal()+(it.getValor()*it.getQuantidade()));
+					
 					compraItensRepository.save(it);
 					Optional <Produto> prod = produtoRepository.findById(it.getProduto().getId());
 					Produto produto = prod.get();
 					produto.setQuantidadeEstoque(produto.getQuantidadeEstoque()+it.getQuantidade());
+					produto.setAtivo(77);
 					this.listaCompra = new ArrayList<>();
 					produtoRepository.saveAndFlush(produto);
 					

@@ -1,6 +1,10 @@
 package br.com.mgk.Estagio.model;
 
-import java.time.LocalDate;
+import java.util.Date;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+ 
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -19,13 +22,19 @@ public class Funcionario {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_funcionario")
 	private long id;
 	private String cargo;
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private LocalDate dtnasc;
+	@Temporal(TemporalType.DATE)
+	private Date dtnasc;
 	private String cpf;
 	private String nome;
 	private String login;
 	private String senha;
 	
+	public Date getDtnasc() {
+		return dtnasc;
+	}
+	public void setDtnasc(Date dtnasc) {
+		this.dtnasc = dtnasc;
+	}
 	public String getLogin() {
 		return login;
 	}
@@ -57,13 +66,6 @@ public class Funcionario {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	public LocalDate getDtAdmissao() {
-		return dtnasc;
-	}
-	public void setDtAdmissao(LocalDate dtAdmissao) {
-		this.dtnasc = dtAdmissao;
-	}
 	
 	public String getCargo() {
 		return cargo;
@@ -71,10 +73,5 @@ public class Funcionario {
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
 	}
-	public LocalDate getDt() {
-		return dtnasc;
-	}
-	public void setDt(LocalDate dtAdmissao) {
-		this.dtnasc = dtAdmissao;
-	}
+
 }

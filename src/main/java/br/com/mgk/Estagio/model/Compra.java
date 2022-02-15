@@ -1,7 +1,9 @@
 package br.com.mgk.Estagio.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 @SequenceGenerator(name = "seq_compra", sequenceName = "seq_compra", allocationSize = 1, initialValue = 1)
 
@@ -17,10 +18,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Compra {
 	private static final long serialVersionUID = 1L;
 	@Id 
+
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_compra")
 	private long id;
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private LocalDate data;
+	@Temporal(TemporalType.DATE)
+	private Date data;
 	private Double total;
 	@ManyToOne
 	private Funcionario funcionario;
@@ -32,10 +34,10 @@ public class Compra {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public LocalDate getData() {
+	public Date getData() {
 		return data;
 	}
-	public void setData(LocalDate data) {
+	public void setData(Date data) {
 		this.data = data;
 	}
 	public Double getTotal() {
@@ -59,5 +61,5 @@ public class Compra {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+
 }

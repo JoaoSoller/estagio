@@ -24,6 +24,7 @@ private static final long serialVersionUID = 1L;
 	private String nome;
 	private double preco;
 	private double quantidadeEstoque=0.;
+	private int ativo=-1;
 	private String nomeImagem;
 	
 	public long getId() {
@@ -90,5 +91,10 @@ private static final long serialVersionUID = 1L;
 		this.nome = nome;
 	}
 	
-	
+	public int getAtivo() {
+		return ativo;
+	}
+	public void setAtivo(int ativo) {
+		this.ativo = ativo;
+	}
 }

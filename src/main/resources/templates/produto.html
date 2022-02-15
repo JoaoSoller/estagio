@@ -147,6 +147,7 @@ function deleteUser(id){
 				$('#'+ id).remove();
 				alert(response);	
 				document.getElementById('formCadastroUser').reset();	
+				document.getElementById('modalPesquisarUser').reset();	
 		}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao deletar marca por id: " + xhr.responseText);

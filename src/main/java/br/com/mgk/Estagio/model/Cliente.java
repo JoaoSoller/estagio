@@ -7,8 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -20,7 +21,7 @@ public class Cliente {
 	private long id;
 	private String cpf;
 	private String nome;
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Temporal(TemporalType.DATE)
 	private Date dtnasc;
 	private String endereco;
 	private String cidade;

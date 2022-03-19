@@ -180,7 +180,7 @@ function deleteUser(id){
   }
   
   function colocarEmEdicao(id) {  
-  
+   var i;
    var marcacb = document.getElementById("marcacb");
    var categoriacb = document.getElementById("categoriacb");
    var auxm = document.getElementById("auxmarca");
@@ -198,6 +198,10 @@ function deleteUser(id){
 				
 				categoriacb.selectedIndex = response.poscategoria;
 				marcacb.selectedIndex = response.posmarca;
+				 while (comboCidades.length) 
+				 {
+     				   i="";
+  				  }
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao produto por id: " + xhr.responseText);

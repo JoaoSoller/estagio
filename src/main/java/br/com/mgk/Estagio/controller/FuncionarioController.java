@@ -60,6 +60,7 @@ public class FuncionarioController {
 	@ResponseBody /* Descricao da resposta */
 	public ResponseEntity<Funcionario> salvar(@RequestBody Funcionario usuario){  /* Recebe os dados para salvar */
 	
+			usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 			Funcionario user = usuarioRepository.saveAndFlush(usuario);	
 			return new ResponseEntity<Funcionario>(user, HttpStatus.CREATED);
 	}
@@ -71,8 +72,8 @@ public class FuncionarioController {
 	@ResponseBody /* Descricao da resposta */
 	public ResponseEntity<?> atualizar(@RequestBody Funcionario usuario) { /* Recebe os dados para salvar */
 		
-		if(usuario.getId()!=0)// só alterar senha se for primeiro cadastro
-			usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+	
+		usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 		Funcionario user = usuarioRepository.saveAndFlush(usuario);	
 		return new ResponseEntity<Funcionario>(user, HttpStatus.OK);
 		

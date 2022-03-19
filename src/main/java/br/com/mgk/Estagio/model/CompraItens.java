@@ -9,7 +9,8 @@ import javax.persistence.SequenceGenerator;
 
 @SequenceGenerator(name = "seq_compraitens", sequenceName = "seq_compraitens", allocationSize = 1, initialValue = 1)
 
-@Entity
+
+@Entity(name = "compra_itens")
 public class CompraItens {
 	private static final long serialVersionUID = 1L;
 	@Id 
@@ -21,6 +22,7 @@ public class CompraItens {
 	private Compra compra;
 	private double quantidade = 0;
 	private double valor = 0;
+	private double valoritem = 0;
 	public long getId() {
 		return id;
 	}
@@ -51,8 +53,15 @@ public class CompraItens {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
+	public double getValoritem() {
+		return valoritem;
+	}
+	public void setValoritem() {
+		this.valoritem = valor * quantidade;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 	
 }

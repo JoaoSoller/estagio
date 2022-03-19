@@ -13,5 +13,7 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long>{
 	@Query(value = "select u from Funcionario u where upper(trim(u.nome)) like %?1%")
 	List<Funcionario>buscarPorNome(String name);
 
+	@Query("from Funcionario where login=?1")
+	List<Funcionario>buscarPorEmail(String name);
 	
 }

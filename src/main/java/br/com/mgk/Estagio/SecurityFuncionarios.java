@@ -16,36 +16,33 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
-public class SecurityCliente extends WebSecurityConfigurerAdapter {
+@Order(2)
+public class SecurityFuncionarios extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private DataSource dataSourcefuncionario;
-
-	@Bean
-	public BCryptPasswordEncoder passwordEncoderFuncionario() {
-		return new BCryptPasswordEncoder();
-	}
-
+	private DataSource dataSource;
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSourcefuncionario)
+		auth.jdbcAuthentication().dataSource(dataSource)
 				.usersByUsernameQuery(
-						"select login as username, senha as password, 1 as enable from cliente where login=?")
+						"select login as username, senha as password, 1 as enable from funcionario where login=?")
 				.authoritiesByUsernameQuery(
-						"select login as username, 'cliente' as authority from cliente where login=?")
+						"select login as username, 'funcionario' as authority from funcionario where login=?")
 				.passwordEncoder(new BCryptPasswordEncoder());
 
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.antMatcher("/finalizar/**").authorizeRequests().anyRequest().hasAnyAuthority("cliente").and().csrf()
-				.disable().formLogin().loginPage("/cliente").permitAll().failureUrl("/cliente")
-				.loginProcessingUrl("/finalizar/login").defaultSuccessUrl("/finalizar").usernameParameter("username")
-				.passwordParameter("password").and().logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/finalizar/logout")).logoutSuccessUrl("/").permitAll()
-				.and().exceptionHandling().accessDeniedPage("/negadoCliente");
+		http.authorizeRequests().antMatchers("/login").permitAll().antMatchers("/administrativo/cadastrar/**")
+				.hasAnyAuthority("funcionario").antMatchers("/administrativo/**").authenticated().and().formLogin()
+				.loginPage("/login").failureUrl("/login").loginProcessingUrl("/admin")
+				.defaultSuccessUrl("/administrativo").usernameParameter("username").passwordParameter("password").and()
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/administrativo/logout"))
+				.logoutSuccessUrl("/login").deleteCookies("JSESSIONID").and().exceptionHandling()
+				.accessDeniedPage("/negadoFuncionario").and().csrf().disable();
+
 	}
 
 }

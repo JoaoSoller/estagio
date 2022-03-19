@@ -23,11 +23,12 @@ public class Compra {
 	private long id;
 	@Temporal(TemporalType.DATE)
 	private Date data;
-	private Double total;
+	private Double total = 0.0;
 	@ManyToOne
 	private Funcionario funcionario;
 	@ManyToOne
 	private Fornecedor fornecedor;
+
 	public long getId() {
 		return id;
 	}

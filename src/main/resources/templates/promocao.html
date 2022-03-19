@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="pt-br">
 <head>
 <meta charset="ISO-8859-1">
-<title>Compra de Produtos</title>
+<title>Promocao de Produtos</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -18,25 +18,11 @@ html {
 
 <body>
 
-<h3>Entrada de Produto</h3>
+<h3>Promocao de Produto</h3>
 
 
-<form action="salvar" id="formCadastroUser" th:object="${compra}" method="post" enctype="multipart/form-data">
+<form action="salvar" id="formCadastroUser" th:object="${promocao}" method="post" enctype="multipart/form-data">
 <div class="form-row">
-	<div class="mb-3">
-	<div class="mb-3">
-  <label for="nome" class="form-label">ID da Compra</label>
-  <input type="text" class="form-control " th:field="*{id}" id="compraid"  readonly="readonly" required="required"><br>
-</div>
-	<label for="nome" class="form-label">Fornecedor</label>
-	  <select th:field="*{fornecedor}" class="btn btn-secondary dropdown-toggle">
-		  <option value=""> Escolha o fornecedor</option>
-		  <option th:each="fornecedorlol : ${listafornecedores}"
-		  					th:value="${fornecedorlol.id}"
-		  				    th:text="${fornecedorlol.nomefantasia}">
-		  </option>		
-	  </select>
-	</div>
 	<div class="mb-3">
 	<label for="nomefunc" class="form-label btn">Funcionario</label>
 	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle">
@@ -47,13 +33,23 @@ html {
 		  </option>		
 	  </select>
 	</div>
+	<div class="mb-3">
+		 <label for="nome" class="form-label">Nome da Promocao</label>
+ 		 <input type="text" class="form-control " th:field="*{nome}" id="nomepromocao" required="required"><br>
+	</div>
+	<div class="mb-3">
+		 <label for="nome" class="form-label">Data Inicial da Promocao</label>
+ 		 <input type="text" class="form-control" id="dataini"   th:field="*{dtini}" ><br>
+	</div>
+	<div class="mb-3">
+		 <label for="nome" class="form-label">Data Final da Promocao</label>
+ 		 <input type="text" oninput="mascara(this, 'data')" class="form-control "  id="datafim" th:field="*{dtfim}"><br>
+	</div>
 </div>
-</div>
-<div class="form-row" th:object="${CompraItem}">
-<div class="form-row">
+<div class="form-row" th:object="${PromocaoItem}">
 <div class="mb-3">
   <label for="nome" class="form-label">ID do Produto</label>
-  <input type="text" class="form-control" th:field="*{produto.id}" id="idproduto"  readonly="readonly" required="required"><br>
+  <input type="text" class="form-control " th:field="*{produto.id}" id="idproduto"  readonly="readonly" required="required"><br>
 </div>
 
 <div class="mb-3">
@@ -63,40 +59,32 @@ html {
 </div>
 
 <div class="mb-3">
-  <label for="valor" class="form-label">Valor</label>
-  <input type="number" class="form-control" id="valor"  th:field="*{valor}" placeholder="Informe o valor" value="">
+  <label for="valor" class="form-label">Valor Antigo</label>
+  <input type="number" class="form-control"  th:field="*{produto.preco}" id="idpreco" readonly="readonly">
 </div>
 
 <div class="mb-3">
-  <label for="quantidade" class="form-label">Quantidade</label>
-  <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}" placeholder="Informe a quantidade" required="required">
-</div>
-<div class="mb-3">
-  <label for="quantidade" class="form-label">Valor Total da Compra</label>
-  <div class="alert alert-danger" role="alert" th:text="${valorcompratotallol}">
+  <label for="quantidade" class="form-label">Valor Novo</label>
+  <input type="number" class="form-control" id="preconovo" th:field="*{preconovo}" placeholder="Informe o novo valor" required="required">
 </div>
 </div>
 
-<div class="form-row" th:object="${CompraItem}" >
+<div class="form-row" >
 	<div class="form-group col-md-6">
 	<table class="table">
 	  <thead>
 	    <tr>
 	      <th scope="col">Nome</th>
-	      <th scope="col">Quantidade</th>
           <th scope="col">Valor Venda</th>
-          <th scope="col">Total do Item</th>
 	      <th scope="col">Acao</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr  th:each="entradaslol : ${listaCompraItens}">
+	    <tr  th:each="entradaslol : ${listaPromocaoItens}">
 	      <td th:text="${entradaslol.produto.nome}"></td>
-	      <td th:text="${entradaslol.quantidade}"></td>
-	      <td th:text="${entradaslol.valor}"></td>
-	      <td th:text="${entradaslol.valoritem}"></td>
+	      <td th:text="${entradaslol.preconovo}"></td>
 	      <td> 
-                      <button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button>
+                      <button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs" onclick="validar();">Remover</button>
           </td>
 	   
 	    </tr>
@@ -104,10 +92,14 @@ html {
 	  </tbody>
 	</table>
 	</div>
+</div>
 <div class="alert alert-danger" role="alert" th:text="${erro}"> </div>
-<button type="submit" id="add" name="acao" th:value="itens" class="btn btn-primary" >Adicionar</button>
-<button type="submit" class="btn btn-primary"  name="acao" th:value="salvar" onclick="limpar();">Salvar</button>
-<button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarCompra" onclick="pesquisarCompra()">Pesquisar Compra</button>
+<button type="submit" class="btn btn-primary"  name="acao" th:value="salvar" onclick="limpar(); validar();">Salvar</button>
+<button type="submit" id="add" name="acao" th:value="itens" class="btn btn-primary" onclick="validar();" >ADD</button>
+
+
+
+
 
 
 <div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -148,44 +140,6 @@ html {
   </div>
 </div>
 
-<div class="modal fade" id="modalPesquisarCompra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Compra</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="nameBusca" class="col-form-label">Informe o funcionario:</label>
-            <input type="text" class="form-control" id="nameBuscafunc">
-          </div>
-          <button type="button" class="btn btn-success" onclick="pesquisarCompra()">Buscar</button>
-        </form>
-
-				<div style="height: 300px;overflow: scroll;">
-					<table class="table" id="tabelaresultadosCompra">
-						<thead>
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Valor</th>
-								<th scope="col">Editar</th>
-								<th scope="col">Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-				</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -201,6 +155,36 @@ function limpar(){
 	
 }
 
+function validar(){
+	var id = $("#id").val();
+	var nome = $("#nomepromocao").val();
+	var dataini = $("#dataini").val();
+	var datafim = $("#datafim").val();
+	var preconovo = $("#preconovo").val();
+	
+		if (nome == null || nome != null && nome.trim() == ''){
+			$("#nome").focus();
+			alert('Informe o nome');
+			return;
+		}
+		
+		if (dataini == null){
+			$("#dataini").focus();
+			alert('Informe a data inicial');
+			return;
+		}
+		
+		if (datafim == null){
+			$("#datafim").focus();
+			alert('Informe a data final');
+			return;
+		}
+		if (preconovo == null){
+			$("#preconovo").focus();
+			alert('Informe o preco novo');
+			return;
+		}
+}
 function botaoDeletarDaTela(){
 	var id = $('#id').val();
 	
@@ -216,7 +200,7 @@ function deleteUser(id){
 	if(confirm('Deseja realmente deletar?')) {
 	 $.ajax({
 			method : "DELETE",
-			url : "produto/cadastro/delete",
+			url : "/deletatudo",
 			data : "idproduto=" + id ,
 			success : function(response) {
 			
@@ -227,9 +211,51 @@ function deleteUser(id){
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Este produto nao pode ser excluido");
 		});
-	}
+	}	
 }
+function mascara(i,t)
+{
+   
+   var v = i.value;
+   
+   if(isNaN(v[v.length-1])){
+      i.value = v.substring(0, v.length-1);
+      return;
+   }
+   
+   if(t == "data"){
+      i.setAttribute("maxlength", "10");
+      if (v.length == 2 || v.length == 5) i.value += "/";
+   }
 
+   if(t == "cpf"){
+      i.setAttribute("maxlength", "14");
+      if (v.length == 3 || v.length == 7) i.value += ".";
+      if (v.length == 11) i.value += "-";
+   }
+
+   if(t == "cnpj"){
+      i.setAttribute("maxlength", "18");
+      if (v.length == 2 || v.length == 6) i.value += ".";
+      if (v.length == 10) i.value += "/";
+      if (v.length == 15) i.value += "-";
+   }
+
+   if(t == "cep"){
+      i.setAttribute("maxlength", "9");
+      if (v.length == 5) i.value += "-";
+   }
+
+   if(t == "tel"){
+      if(v[0] == 9){
+         i.setAttribute("maxlength", "10");
+         if (v.length == 5) i.value += "-";
+      }else{
+         i.setAttribute("maxlength", "9");
+         if (v.length == 4) i.value += "-";
+      }
+   }
+}
 
   function pesquisarUser(){
      
@@ -238,7 +264,7 @@ function deleteUser(id){
 	  if (nome != null && nome.trim() != ''){
 		  $.ajax({
 				method : "GET",
-				url : "buscarPorNome",
+				url : "/buscarPorNometudo",
 				data : "name=" + nome ,
 				success : function(response) {
 					$('#tabelaresultados > tbody > tr').remove();
@@ -259,12 +285,13 @@ function deleteUser(id){
 
   	  $.ajax({
 			method : "GET",
-			url : "buscarprodutoid",
+			url : "/buscarprodutoidtudo",
 			data : "idproduto=" + id ,
 			success : function(response) {
 
 				$("#nome").val(response.nome);
 				$("#idproduto").val(response.id);
+				$("#idpreco").val(response.preco);
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao produto por id: " + xhr.responseText);
@@ -272,42 +299,67 @@ function deleteUser(id){
 	  
 	  
   }
-		function pesquisarCompra(){
-	 
-	  $.ajax({
-				method : "GET",
-				url : "buscarPorCompra",
-				data : " ",
-				success : function(response) {
-					$('#tabelaresultadosCompra > tbody > tr').remove();
-					
-					for (var i = 0; i < response.length; i++){
-						$('#tabelaresultadosCompra > tbody').append
-						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].total+'</td><td><button type="button" onclick="colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
-					}
-				  
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert("Erro ao buscar produto: " + xhr.responseText);
-			});		  
-	  
-  }
-  
-  function colocarEmEdicaoCompra(id) {  
+	function salvarUsuario() {
 
-  	  $.ajax({
+		var id = $("#id").val();
+		var nome = $("#nome").val();
+		var preco = $("#preco").val();
+		var descricao = $("#descricao").val();
+		var marca = $("#marcacb").val();
+		var categoria = $("#categoriacb").val();
+		var selectElem = document.getElementById('marcacb')
+		var pos1 = selectElem.selectedIndex;
+		var selectElemcategoria = document.getElementById('categoriacb')
+		var pos2 = selectElemcategoria.selectedIndex;	
+		console.log(marca);
+		document.getElementById('formCadastroUser').reset();
+		if (nome == null || nome != null && nome.trim() == ''){
+			$("#nome").focus();
+			alert('Informe o nome');
+			return;
+		}
+		
+		if (preco == null){
+			$("#preco").focus();
+			alert('Informe o preco');
+			return;
+		}
+		
+		$.ajax({
 			method : "POST",
-			url : "edicao",
-			data : "idcompra=" + id ,
-			success : function(response) {
-				$("#compraid").val(response.id);
+			url : "produto/cadastro/salvar",
+			data : JSON.stringify({
+				id : id,
+				nome : nome,
+				preco : preco,
+				descricao : descricao,
+				marca : marca,
+				categoria : categoria,
+				posmarca : pos1,
+				poscategoria : pos2
+			}),
+			contentType : "application/json; charset=utf-8",
+			success : function(response){
+			 if(response.marca == -1){
+			    	alert("Marca Invalida");
+			    	$("#marca").focus();
+			    	return
+			    }
+			     if(response.categoria == -1){
+			    	alert("Categoria Invalida");
+			    	$("#categoria").focus();
+			    	return
+			    }
+					alert("Registro com sucesso!");
+					alert("Deseja alterar ou gravar outro Produto?");
+					document.getElementById('formCadastroUser').reset();
 			}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro a busca de compra por id: " + xhr.responseText);
+			alert("Erro ao salvar produto: " + xhr.responseText);
 		});
-	  
-	  
-  }
+		document.getElementById('formCadastroUser').reset();
+	}
+	
 </script>
 </body>
 </html>

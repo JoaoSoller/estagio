@@ -69,7 +69,6 @@ import br.com.mgk.Estagio.model.Produto;
 			
 		
 			//usuario.setNomeImagem(String.valueOf(usuario.getId()) + arquivo.getOriginalFilename());
-					
 			Produto user = produtoRepository.saveAndFlush(usuario);	
 			return new ResponseEntity<Produto>(user, HttpStatus.CREATED);
 		

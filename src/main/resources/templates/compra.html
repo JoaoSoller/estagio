@@ -29,17 +29,17 @@ html {
   <input type="text" class="form-control " th:field="*{id}" id="compraid"  readonly="readonly" required="required"><br>
 </div>
 	<label for="nome" class="form-label">Fornecedor</label>
-	  <select th:field="*{fornecedor}" class="btn btn-secondary dropdown-toggle">
+	  <select th:field="*{fornecedor}"  class="btn btn-secondary dropdown-toggle" id="fornecedor-lol" onchange ="minhafuncao();" required="required">
 		  <option value=""> Escolha o fornecedor</option>
 		  <option th:each="fornecedorlol : ${listafornecedores}"
 		  					th:value="${fornecedorlol.id}"
 		  				    th:text="${fornecedorlol.nomefantasia}">
-		  </option>		
+		  </option>
 	  </select>
 	</div>
 	<div class="mb-3">
 	<label for="nomefunc" class="form-label btn">Funcionario</label>
-	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle">
+	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle"  id="funcionario-lol"  onchange ="minhafuncao();">
     <option value=""> Escolha o funcionario</option>
     <option th:each="funcionariolol : ${listafuncionario}"
 		  					th:value="${funcionariolol.id}"
@@ -48,68 +48,77 @@ html {
 	  </select>
 	</div>
 </div>
-</div>
+
 <div class="form-row" th:object="${CompraItem}">
-<div class="form-row">
-<div class="mb-3">
-  <label for="nome" class="form-label">ID do Produto</label>
-  <input type="text" class="form-control" th:field="*{produto.id}" id="idproduto"  readonly="readonly" required="required"><br>
+	<div class="form-row">
+		<div class="mb-3">
+		  <label for="nome" class="form-label">ID do Produto</label>
+		  <input type="text" class="form-control" th:field="*{produto.id}" id="idproduto"  readonly="readonly" required="required"><br>
+		</div>
+	
+		<div class="mb-3">
+		  <label for="nome" class="form-label">Nome do Produto</label>
+		  <input type="text" class="form-control" th:field="*{produto.nome}" id="nome"  readonly="readonly" required="required"><br>
+		  <button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pesquisar</button>
+		</div>
+	
+	
+		<div class="mb-3">
+		  <label for="nome" class="form-label">Estoque do Produto</label>
+		</div>
+		
+		<div class="mb-3">
+		  <label for="valor" class="form-label">Valor</label>
+		  <input type="number" class="form-control" id="valor"  th:field="*{valor}" placeholder="Informe o valor" value="">
+		</div>
+	
+		<div class="mb-3">
+		  <label for="quantidade" class="form-label">Quantidade</label>
+		  <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}" placeholder="Informe a quantidade" required="required">
+		</div>
+		
+		<div class="mb-3">
+		  <label for="quantidade" class="form-label">Valor Total da Compra</label>
+		<input type="number" class="form-control" th:text="${valorcompratotallol}" id="compratotal" placeholder="Total da compra" required="required" readonly="readonly">
+		
+		</div>
+		
+	</div>
 </div>
-
-<div class="mb-3">
-  <label for="nome" class="form-label">Nome do Produto</label>
-  <input type="text" class="form-control" th:field="*{produto.nome}" id="nome"  readonly="readonly" required="required"><br>
-  <button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pesquisar</button>
-</div>
-
-<div class="mb-3">
-  <label for="valor" class="form-label">Valor</label>
-  <input type="number" class="form-control" id="valor"  th:field="*{valor}" placeholder="Informe o valor" value="">
-</div>
-
-<div class="mb-3">
-  <label for="quantidade" class="form-label">Quantidade</label>
-  <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}" placeholder="Informe a quantidade" required="required">
-</div>
-<div class="mb-3">
-  <label for="quantidade" class="form-label">Valor Total da Compra</label>
-  <div class="alert alert-danger" role="alert" th:text="${valorcompratotallol}">
-</div>
-</div>
-
+ 
 <div class="form-row" th:object="${CompraItem}" >
 	<div class="form-group col-md-6">
-	<table class="table">
-	  <thead>
-	    <tr>
-	      <th scope="col">Nome</th>
-	      <th scope="col">Quantidade</th>
-          <th scope="col">Valor Venda</th>
-          <th scope="col">Total do Item</th>
-	      <th scope="col">Acao</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr  th:each="entradaslol : ${listaCompraItens}">
-	      <td th:text="${entradaslol.produto.nome}"></td>
-	      <td th:text="${entradaslol.quantidade}"></td>
-	      <td th:text="${entradaslol.valor}"></td>
-	      <td th:text="${entradaslol.valoritem}"></td>
-	      <td> 
-                      <button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button>
-          </td>
-	   
-	    </tr>
-
-	  </tbody>
-	</table>
+		<table class="table" id="tabelaItens">
+		  <thead>
+		    <tr>
+		      <th scope="col">Nome</th>
+		      <th scope="col">Quantidade</th>
+	          <th scope="col">Valor Venda</th>
+	          <th scope="col">Total do Item</th>
+		      <th scope="col">Acao</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr  th:each="entradaslol : ${listaCompraItens}">
+		      <td th:text="${entradaslol.produto.nome}"></td>
+		      <td th:text="${entradaslol.quantidade}"></td>
+		      <td th:text="${entradaslol.valor}"></td>
+		      <td th:text="${entradaslol.valoritem}"></td>
+		      <td> 
+	                      <button type="submit" name="acao" th:value="remover" class="btn btn-primary" onclick ="minhafuncao();">Remover</button>
+	          </td>
+		   
+		    </tr>
+		  </tbody>
+		</table>
 	</div>
-<div class="alert alert-danger" role="alert" th:text="${erro}"> </div>
-<button type="submit" id="add" name="acao" th:value="itens" class="btn btn-primary" >Adicionar</button>
+</div>
+<div class=" alert alert-danger" role="alert" th:text="${erro}"> </div>
+<button type="submit" id="add" name="acao" th:value="itens" class="btn btn-primary" onclick ="minhafuncao()">Adicionar</button>
 <button type="submit" class="btn btn-primary"  name="acao" th:value="salvar" onclick="limpar();">Salvar</button>
-<button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarCompra" onclick="pesquisarCompra()">Pesquisar Compra</button>
-
-
+<button type="submit" class="btn btn-primary" name="acao" th:value="salvar" onclick="pesquisarCompra();">Pesquisar</button>
+<button type="submit" class="btn btn-primary" name="acao" th:value="novo">Novo</button>
+<button type="submit" class="btn btn-primary" name="acao" th:value="excluir">Excluir</button>
 <div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -123,7 +132,7 @@ html {
             <label for="nameBusca" class="col-form-label">Informe o nome:</label>
             <input type="text" class="form-control" id="nameBusca">
           </div>
-          <button type="button" class="btn btn-success" onclick="pesquisarUser()">Buscar</button>
+          <button type="button" class="btn btn-success" onclick="pesquisarUser();">Buscar</button><br>
         </form>
 
 				<div style="height: 300px;overflow: scroll;">
@@ -147,46 +156,22 @@ html {
     </div>
   </div>
 </div>
+	
 
-<div class="modal fade" id="modalPesquisarCompra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Compra</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="nameBusca" class="col-form-label">Informe o funcionario:</label>
-            <input type="text" class="form-control" id="nameBuscafunc">
-          </div>
-          <button type="button" class="btn btn-success" onclick="pesquisarCompra()">Buscar</button>
-        </form>
-
-				<div style="height: 300px;overflow: scroll;">
-					<table class="table" id="tabelaresultadosCompra">
-						<thead>
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Valor</th>
-								<th scope="col">Editar</th>
-								<th scope="col">Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-				</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+<table class="table" id="tabelaresultadosCompra">
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Valor</th>
+				<th scope="col">Editar</th>
+				<th scope="col">Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+		
+	
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
  <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -196,9 +181,9 @@ html {
 
 <script type="text/javascript">
 
-function limpar(){
-	$("#nome").va
-	
+function limpartudou(){
+
+$('#tabelaresultadosCompra > tbody > tr').remove();
 }
 
 function botaoDeletarDaTela(){
@@ -273,7 +258,7 @@ function deleteUser(id){
 	  
   }
 		function pesquisarCompra(){
-	 
+		$("#compratotal").val(null); 
 	  $.ajax({
 				method : "GET",
 				url : "buscarPorCompra",
@@ -283,7 +268,7 @@ function deleteUser(id){
 					
 					for (var i = 0; i < response.length; i++){
 						$('#tabelaresultadosCompra > tbody').append
-						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].total+'</td><td><button type="button" onclick="colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].total+'</td><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
 					}
 				  
 				}
@@ -293,21 +278,79 @@ function deleteUser(id){
 	  
   }
   
-  function colocarEmEdicaoCompra(id) {  
 
+  function colocarEmEdicaoCompra(id) { 
+   var marcacb = document.getElementById("fornecedor-lol");
+   var categoriacb = document.getElementById("funcionario-lol");
+   var compratotallol = document.getElementById("compratotal");
   	  $.ajax({
-			method : "POST",
+			method : "GET",
 			url : "edicao",
 			data : "idcompra=" + id ,
 			success : function(response) {
-				$("#compraid").val(response.id);
+						$("#compraid").val(response.id);
+						$("#compratotal").val(response.total);
+						categoriacb.selectedIndex = response.posfun;
+						marcacb.selectedIndex = response.posfor;
+							console(compratotal);
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro a busca de compra por id: " + xhr.responseText);
 		});
+	 
+		   $.ajax({
+				method : "GET",
+				url : "buscarListaItem",
+				data : "idcompra=" + id ,
+				success : function(response) {
+							
+							$('#tabelaItens > tbody > tr').remove();
+							for (var i = 0; i < response.length; i++){
+							$('#tabelaItens > tbody').append
+							('<tr id="'+response[i].id+'"><td>'+response[i].nome+'</td><td>'+response[i].quantidade+'</td><td>'+response[i].valor+'</td><td>'+response[i].valoritem+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs" onclick="colocarEmEdicao(response[i].produto.id})">Remover</button></td></tr>');
+							}
+				
+				}
 	  
-	  
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+		
   }
+  
+  
+ 
+function minhafuncao()	
+{
+	var selectElem = document.getElementById('fornecedor-lol');
+	pos1 = selectElem.selectedIndex;
+	var selectElem2 = document.getElementById('funcionario-lol');
+	pos2 =selectElem2.selectedIndex;
+	console.log(pos1);
+	console.log(pos2);
+  $.ajax({
+				method : "GET",
+				url : "posfor",
+				data : "posfor=" + pos1 ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		
+  
+  $.ajax({
+				method : "GET",
+				url : "posfun",
+				data : "posfun=" + pos2 ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});					  
+	}
+
+
+  
 </script>
 </body>
 </html>

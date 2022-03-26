@@ -23,6 +23,15 @@ public class CompraItens {
 	private double quantidade = 0;
 	private double valor = 0;
 	private double valoritem = 0;
+	private String nome;
+	private Long idproduto;
+	
+	public Long getIdproduto() {
+		return idproduto;
+	}
+	public void setIdproduto() {
+		this.idproduto = produto.getId();
+	}
 	public long getId() {
 		return id;
 	}
@@ -61,6 +70,15 @@ public class CompraItens {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome() {
+		this.nome = produto.getNome();
+	}
+	public void setValoritem(double valoritem) {
+		this.valoritem = valoritem;
 	}
 	
 	

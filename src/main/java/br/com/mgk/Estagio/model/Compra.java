@@ -28,7 +28,22 @@ public class Compra {
 	private Funcionario funcionario;
 	@ManyToOne
 	private Fornecedor fornecedor;
-
+	private long posfun;
+	private long posfor;
+	
+	
+	public long getPosfun() {
+		return posfun;
+	}
+	public void setPosfun(long posfun) {
+		this.posfun = posfun;
+	}
+	public long getPosfor() {
+		return posfor;
+	}
+	public void setPosfor(long posfor) {
+		this.posfor = posfor;
+	}
 	public long getId() {
 		return id;
 	}

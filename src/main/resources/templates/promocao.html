@@ -25,7 +25,7 @@ html {
 <div class="form-row">
 	<div class="mb-3">
 	<label for="nomefunc" class="form-label btn">Funcionario</label>
-	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle">
+	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle" id="funcionario-lol">
     <option value=""> Escolha o funcionario</option>
     <option th:each="funcionariolol : ${listafuncionario}"
 		  					th:value="${funcionariolol.id}"
@@ -299,66 +299,81 @@ function mascara(i,t)
 	  
 	  
   }
-	function salvarUsuario() {
+	
+function minhafuncao()	
+	{
+	var selectElem2 = document.getElementById('funcionario-lol');
+	pos2 =selectElem2.selectedIndex;
+	
+  
+  		$.ajax({
+				method : "GET",
+				url : "posfun",
+				data : "posfun=" + pos2 ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});					  
+	}
+	
+	function pesquisarCompra(){ 
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorPromocao",
+				data : " ",
+				success : function(response) {
+					$('#tabelaresultadosCompra > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  
+  }
+  
 
-		var id = $("#id").val();
-		var nome = $("#nome").val();
-		var preco = $("#preco").val();
-		var descricao = $("#descricao").val();
-		var marca = $("#marcacb").val();
-		var categoria = $("#categoriacb").val();
-		var selectElem = document.getElementById('marcacb')
-		var pos1 = selectElem.selectedIndex;
-		var selectElemcategoria = document.getElementById('categoriacb')
-		var pos2 = selectElemcategoria.selectedIndex;	
-		console.log(marca);
-		document.getElementById('formCadastroUser').reset();
-		if (nome == null || nome != null && nome.trim() == ''){
-			$("#nome").focus();
-			alert('Informe o nome');
-			return;
-		}
-		
-		if (preco == null){
-			$("#preco").focus();
-			alert('Informe o preco');
-			return;
-		}
-		
-		$.ajax({
-			method : "POST",
-			url : "produto/cadastro/salvar",
-			data : JSON.stringify({
-				id : id,
-				nome : nome,
-				preco : preco,
-				descricao : descricao,
-				marca : marca,
-				categoria : categoria,
-				posmarca : pos1,
-				poscategoria : pos2
-			}),
-			contentType : "application/json; charset=utf-8",
-			success : function(response){
-			 if(response.marca == -1){
-			    	alert("Marca Invalida");
-			    	$("#marca").focus();
-			    	return
-			    }
-			     if(response.categoria == -1){
-			    	alert("Categoria Invalida");
-			    	$("#categoria").focus();
-			    	return
-			    }
-					alert("Registro com sucesso!");
-					alert("Deseja alterar ou gravar outro Produto?");
-					document.getElementById('formCadastroUser').reset();
+  function colocarEmEdicaoCompra(id) { 
+   var funcionariocb = document.getElementById("funcionario-lol");
+  	  $.ajax({
+			method : "GET",
+			url : "edicao",
+			data : "idcompra=" + id ,
+			success : function(response) {
+						$("#compraid").val(response.id);
+						$("#compratotal").val(response.total);
+						funcionariocb.selectedIndex = response.posfun;
+
 			}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro ao salvar produto: " + xhr.responseText);
+			alert("Erro a busca de compra por id: " + xhr.responseText);
 		});
-		document.getElementById('formCadastroUser').reset();
-	}
+	 
+		   $.ajax({
+				method : "GET",
+				url : "buscarListaItem",
+				data : "idcompra=" + id ,
+				success : function(response) {
+		
+							$('#tabelaItens > tbody > tr').remove();
+							for (var i = 0; i < response.length; i++){
+							$('#tabelaItens > tbody').append
+							('<tr id="'+response[i].id+'"><td>'+response[i].nome+'</td><td>'+response[i].quantidade+'</td><td>'+response[i].valor+'</td><td>'+response[i].valoritem+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
+							}
+				
+				}
+	  
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+		
+  }
+  
 	
 </script>
 </body>

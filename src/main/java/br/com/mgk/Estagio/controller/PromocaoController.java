@@ -21,12 +21,15 @@ import br.com.mgk.Estagio.Repository.FuncionarioRepository;
 import br.com.mgk.Estagio.Repository.ProdutoRepository;
 import br.com.mgk.Estagio.Repository.PromocaoItensRepository;
 import br.com.mgk.Estagio.Repository.PromocaoRepository;
+import br.com.mgk.Estagio.model.Compra;
+import br.com.mgk.Estagio.model.CompraItens;
 import br.com.mgk.Estagio.model.Produto;
 import br.com.mgk.Estagio.model.Promocao;
 import br.com.mgk.Estagio.model.PromocaoItens;
 @Controller
 public class PromocaoController {
 
+	private Long posfun, posfor= new Long(0);
 	private List<PromocaoItens> listaPromocao = new ArrayList<PromocaoItens>();
 	
 	@Autowired
@@ -37,7 +40,6 @@ public class PromocaoController {
 
 	@Autowired
 	private PromocaoItensRepository promocaoItensRepository;
-
 	
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
@@ -139,5 +141,28 @@ public ResponseEntity<List<Produto>> buscarPorNome(@RequestParam(name = "name") 
 
 	return new ResponseEntity<List<Produto>>(usuario, HttpStatus.OK);
 	} 
+@GetMapping(value = "promocao/entrada/posfun") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public void  posfun(@RequestParam(name = "posfun") Long posfun) { /* Recebe os dados para consultar */
+	this.posfun=posfun;
+	}	
+
+@GetMapping(value = "promocao/entrada/buscarListaItem") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public ResponseEntity<List<PromocaoItens>>  buscarItens(@RequestParam(name = "idcompra") Long idcompra) { /* Recebe os dados para consultar */
 	
+	List<PromocaoItens> lista = promocaoItensRepository.buscarPorPromocao(idcompra);
+	this.listaPromocao = lista;
+	return new ResponseEntity<List<PromocaoItens>>(lista, HttpStatus.OK);
+}
+
+@GetMapping(value = "compra/entrada/buscarPorPromocao") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public ResponseEntity<List<Promocao>>  buscarPorPromocao() { /* Recebe os dados para consultar */
+	
+	List<Promocao> usuario = promocaoRepository.findAll();
+
+	return new ResponseEntity<List<Promocao>>(usuario, HttpStatus.OK);
+}
+
 }

@@ -27,7 +27,14 @@ import javax.persistence.TemporalType;
 		private String nome;
 		@ManyToOne
 		private Funcionario funcionario;
+		private long posfun;
 		
+		public long getPosfun() {
+			return posfun;
+		}
+		public void setPosfun(long posfun) {
+			this.posfun = posfun;
+		}
 		public long getId() {
 			return id;
 		}

@@ -5,11 +5,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
-@Entity
+@SequenceGenerator(name = "seq_promocaoitens", sequenceName = "seq_promocaoitens", allocationSize = 1, initialValue = 1)
+
+
+@Entity(name = "promocao_itens")
 public class PromocaoItens {
 	@Id 
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_compraitens")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_promocaoitens")
 	private long id;
 	@ManyToOne
 	private Produto produto;

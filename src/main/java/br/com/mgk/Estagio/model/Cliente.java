@@ -20,14 +20,22 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_cliente")
 	private long id;
 	private String cpf;
-	private String nome;
+	private String nome=" ";
 	@Temporal(TemporalType.DATE)
 	private Date dtnasc;
 	private String endereco;
 	private String cidade;
 	private String login;
 	private String senha;
+	private String cep;
 	
+	
+	public String getCep() {
+		return cep;
+	}
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
 	public String getLogin() {
 		return login;
 	}

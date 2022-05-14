@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Pedidos dos Clientes</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<style type="text/css">
+
+html {
+    margin-left: 5%;
+    margin-right: 5%;
+ 
+}
+</style>
+</head>
+<body>
+
+
+<form  action="" id="formCadastroUser" th:object="${pedido}"  enctype="multipart/form-data">
+<div class="form-row">
+<h3 th:text="*{cliente.nome}" ><!--  -->Pedidos Cliente</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">ENDERECO</th>
+      <th scope="col">CEP</th>
+      <th scope="col">CIDADE</th>
+      <th scope="col">VALOR TOTAL</th>
+      <th scope="col">STATUS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th th:text="*{id}">1</th>
+      <td th:text="*{cliente.endereco}">Mark</td>
+      <td th:text="*{cliente.cep}">Cep</td>
+      <td  th:text="*{cliente.cidade}"></td>
+      <td  th:text="*{valorTotal}"></td>
+      <td  th:text="*{status}"></td>
+    </tr>
+  
+  </tbody>
+</table>
+<div class="mb-3">
+
+</div>
+ <div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Deseja Cancelar o pedido?</h5>
+     
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Atencao quando cancelar o pedido nao sera possivel desfazer.</p>
+      </div>
+      <div class="modal-footer">
+           <a type="submit" class="btn btn-primary" th:href="@{/cancela/{id}(id=${id})}">Cancelar Pedido</a>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+ </div>
+ 
+
+
+ 
+
+<table class="table" id="tabelaresultadosCompra">
+		<thead>
+			<tr >
+				<th scope="col">Data</th>
+				<th scope="col">Valor</th>
+				<th scope="col">Ver</th>
+			</tr>
+		</thead>
+		<tbody>
+		  <tr  th:each="entradaslol : ${listaPedido}" id="minhaTabela">
+		      <td th:text="${entradaslol.dataCompra}"></td>
+		      <td th:text="${entradaslol.valorTotal}"></td>
+		      <td><a class="btn btn-primary" 
+									th:href="@{/pedidorelparamcli/{id}(id=${entradaslol.id})}"
+									role="button"><i class="bi bi-plus-lg"></i>Ver
+									        </a>  </td>
+		    </tr>
+		</tbody>
+	</table>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+ <!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript">
+	
+	function pesquisarPedido(){
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorPedidoNovo",
+				data : " ",
+				success : function(response) {
+					$('#tabelaresultadosCompra > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].valorTotal+'</td><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td>><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Remover</button></td></tr>');
+					}
+					console(response.id);
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		 
+  	}
+  
+  function colocarEmEdicaoCompra(id) { 
+   this.id = id;
+   var marcacb = document.getElementById("fornecedor-lol");
+   var categoriacb = document.getElementById("funcionario-lol");
+   var compratotallol = document.getElementById("compratotal");
+  	  $.ajax({
+			method : "GET",
+			url : "edicaoPedido",
+			data : "idcompra=" + id ,
+			success : function(response) {
+						$("#valortotal").val(response.valortotal);
+						$("#frete").val(response.frete);
+						$("#dtcompra").val(response.dataCompra);
+						$("#cliente").val(response.cliente.nome);
+						$("#compraid").val(response.cliente.id);
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+	 
+		   $.ajax({
+				method : "GET",
+				url : "buscarListaItemPedido",
+				data : "idcompra=" + id ,
+				success : function(response) {
+							
+							$('#tabelaItens > tbody > tr').remove();
+							for (var i = 0; i < response.length; i++){
+							$('#tabelaItens > tbody').append 
+							('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].produto.nome+'</td><td>'+response[i].quantidade+'</td><td>'+response[i].valorUnitario+'</td><td>'+response[i].ValorTotal+'</td></tr>');
+							}
+				
+				}
+	  
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+		
+  }
+</script>
+</body>
+</html>

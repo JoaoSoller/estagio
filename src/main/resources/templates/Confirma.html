@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+
+#status-pedido {
+
+ font-weight: bold;
+font-size: 20px;
+
+background: #006400		;
+
+color: #fff;
+
+padding: 30px;
+
+width: 100%;
+
+}
+
+@media screen and (min-width: 30em) {
+
+.w-70 {
+
+width: 70%;
+
+}
+
+}
+
+#bloco-confirma {
+
+border-radius: .5rem;
+
+background: #e8fdf5;
+
+padding: 2rem;
+
+border: 1px solid #19a974;
+
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button1 {background-color: #4CAF50;} /* Green */
+</style>
+
+<meta charset="ISO-8859-1">
+<title>Pedido Realizado Com sucesso</title>
+<!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<body>
+</head>
+<div class="w-70" style="padding-left: 1em; padding-right: 1em; margin-left: auto; margin-right: auto" id="status-pedido-c">
+
+<p style="font-size: 3.25rem; color: rgba(0,0,0,.7)">Pedido Confirmado</p>
+
+<div id="bloco-confirma">
+
+<span style="font-size: 2rem; color: #137752; font-weight: 600">Seu pedido foi realizado com sucesso.</span>
+
+<p><span style="color: #137752; font-size: 2rem">Em breve voce recebera um e-mail no endereco&nbsp;<strong id="email"></strong>&nbsp; com todos os detalhes do pedido.</span></p><p id="status-pedido"> Aguardamos a confirmacao do pagamento</p></div>
+ 
+</div>
+
+<div class="w-70" style="padding-left: 1em; padding-right: 1em; margin-left: auto; margin-right: auto" id="status-pedido-c">
+
+<div style="border-radius: .5rem; background: #fff; padding: 2rem; border: 1px solid #000;">
+<p id="confirma-info"  style="font-weight: bold">Itens do Pedido</p>
+
+<div class="form-group col-md-6">
+		<table id="tabelaItens">
+		  <tbody>
+		    <tr  th:each="entradaslol : ${listaItens}" id="minhaTabela">
+		      <td th:text="${entradaslol.quantidade}"></td>    
+		      <td> - </td>
+		      <td th:text="${entradaslol.produto.nome}"> 
+		      <td> - </td>
+		      <td th:text="${entradaslol.produto.preco}"> 
+		    </tr>
+		  </tbody>
+		</table>
+		<table>
+		  <tbody>
+		      <td style="font-weight: bold" >Total da venda :</td><br>
+		      <td th:text="${pedido.valorTotal}"></td>  
+		  </tbody>
+		   <tbody>
+		      <td style="font-weight: bold" >Desconto :</td><br>
+		      <td th:text="${pedido.Desconto}"></td>  
+		  </tbody>
+		  <tbody>
+		      <td style="font-weight: bold">Valor do Frete :</td><br>
+		      <td th:text="${valor}"></td>  
+		  </tbody>
+		   <tbody>
+		      <td style="font-weight: bold" >Valor Final :</td><br>
+		      <td th:text="${pedido.valorFinal}"></td>  
+		  </tbody>
+		  
+		</table>
+		<table th:each="entradaslol : ${cliente}">
+		  <tbody>
+		      <td style="font-weight: bold" >Comprador :</td><br>
+		      <td th:text="${entradaslol.nome}"></td>  
+		  </tbody>
+		</table>
+	
+		    
+</div>
+
+</div>
+
+
+<script type="text/javascript">
+function criarButton(){
+	
+	var resultado = confirm("Voce Deseja Finalizar a Compra?");
+	
+		  $.ajax({
+				method : "GET",
+				url : "resultex",
+				data : "ex=" + resultado ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});
+	if(resultado)
+	{
+		alert("Compra realizada!")	
+	}
+	else{
+	alert("Compra nao realizada!")	
+	}
+}
+if ($('#bodyConfirm').length) {
+
+ var iterations = 0
+
+ var actions = setInterval(carregaStatus, 1000)
+
+$('#email').text(_clientePedido.email)
+
+var infoOrder = $('#bodyConfirm .container .style-text');
+
+$('#confirma-info').replaceWith(infoOrder);
+
+}
+
+function carregaStatus() {
+
+ iterations++;
+
+ console.log(iterations);
+
+ if (iterations >= 20) {
+
+ clearInterval(actions)
+
+ } else {
+
+ $.get('/pedido?i=' + _idPedido, function (data) {
+
+ var aprovado = data.indexOf('data-id="13"');
+
+console.log(aprovado)
+
+ var cancelado = data.indexOf('data-id="7"');
+
+console.log(cancelado)
+
+  if (aprovado > 0) {
+
+
+
+  $('#status-pedido').replaceWith('<p id="status-pedido" style="background: #4cae4c; color: #fff"><i class="fa fa-check-circle"></i><b>   Pagamento Aprovado</b></p>');
+
+  }
+
+
+
+  if (cancelado > 0) {
+
+
+
+  $('#status-pedido-c').replaceWith('<div class="w-70" style="padding-left: 1em; padding-right: 1em; margin-left: auto; margin-right: auto" id="status-pedido-c"> '+
+
+'<p style="font-size: 3.25rem; color: rgba(0,0,0,.7)">Pedido Cancelado</p> '+
+
+'<div style="border-radius: .5rem; background: #fcd1cd; padding: 2rem; border: 1px solid #c23426;">'+
+
+'<span style="font-size: 2rem; color: #c23426; font-weight: 600">Seu pedido foi realizado, porem cancelado pela empresa de cartão de crédito</span>'+
+
+'<p><span style="color: #c23426; font-size: 2rem">Em breve você receberá um e-mail no endereço </span><strong id=email></strong>'+
+
+'<span> com todos os detalhes do pedido.</span></p></div>'+
+
+'</div>');
+
+  }
+
+ });
+
+ }
+
+
+}</script>
+</body>
+</html>

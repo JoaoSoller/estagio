@@ -1,5 +1,8 @@
 package br.com.mgk.Estagio.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,14 +27,19 @@ import br.com.mgk.Estagio.Repository.ProdutoRepository;
 import br.com.mgk.Estagio.model.Cliente;
 import br.com.mgk.Estagio.model.Compra;
 import br.com.mgk.Estagio.model.CompraItens;
+import br.com.mgk.Estagio.model.PedidoItens;
 import br.com.mgk.Estagio.model.Produto;
 
 @Controller
 public class CompraController {
 
-private Long posfun, posfor= new Long(0);
+private long posfun= new Long(0);
+private long posfor = new Long(0);
 private Double compraaux = new Double(0.0);
-
+private boolean ex = false;
+private int idnovo;
+private Compra compra = new Compra();
+private String id;
 private List<CompraItens> listaCompra = new ArrayList<CompraItens>();
 @Autowired
 private CompraRepository compraRepository;
@@ -69,19 +78,37 @@ public Double calculaTotal(List<CompraItens> lista) { /* Recebe os dados para co
 	return total;
 }
 
-@PostMapping(value = "/compra/entrada/salvar") /* Nosso primeiro método de API */
+
+@PostMapping("compra/entrada/salvar") /* Nosso primeiro método de API */
 @ResponseBody /* Retorna os dados par ao corpo da resposta */
 public ModelAndView salvar(String acao, Compra compra, CompraItens item) {
 	ModelAndView mv = new ModelAndView("compra");
+	ModelAndView mv2 = new ModelAndView("compra2");
 	double totalcompra=0.0 ,aux1=0;
+	
+	
+	if(compra.getData()==null)
+	{
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		compra.setData(date.format(formatter));
+	}
+	compra.setPosfor(posfor);
+	compra.setPosfun(posfun);
 	mv.addObject("listafornecedores", fornecedoresRepository.findAll());
 	mv.addObject("listafuncionario", funcionarioRepository.findAll());
-	if(posfor != null && posfun != null)
+	mv2.addObject("listafornecedores", fornecedoresRepository.findAll());
+	mv2.addObject("listafuncionario", funcionarioRepository.findAll());
+	this.compra=compra;
+	if(acao.equals("pesquisar") )
 	{
-		compra.setPosfor(posfor);
-		compra.setPosfun(posfun);
+		compra.setPosfor(0);
+		compra.setPosfun(0);
+		
+		return mv;
 	}
 	mv.addObject("CompraItem", item);
+	mv2.addObject("CompraItem", item);
 	if(acao.equals("itens")) {
 		int i=0,j=0,k=0;
 				for (CompraItens ucp : listaCompra) {
@@ -89,33 +116,60 @@ public ModelAndView salvar(String acao, Compra compra, CompraItens item) {
 						j=1;
 					k++;	
 				}
-			
-				if(j==1)
+				if(item.getQuantidade()>0 && item.getValor()>0)
 				{
-					aux1=0;
-					for (CompraItens upp : listaCompra) {
-						
-						if(upp.getProduto().getId() == item.getProduto().getId())
-						{
-							listaCompra.get(i).setQuantidade(listaCompra.get(i).getQuantidade()+item.getQuantidade());
-							listaCompra.get(i).setValor(item.getValor());
-							listaCompra.get(i).setValoritem();
+					if(j==1)
+					{
+						aux1=0;
+						for (CompraItens upp : listaCompra) {
+							
+							if(upp.getProduto().getId() == item.getProduto().getId())
+							{
+								listaCompra.get(i).setQuantidade(listaCompra.get(i).getQuantidade()+item.getQuantidade());
+								listaCompra.get(i).setValor(item.getValor());
+								listaCompra.get(i).setValoritem();
+							}
+							//MUDAR POIS ESTA DUPLICANDO NA HORA DE MOSTRAR ESTAVA DANDO CERTO A REMOCAO MAS AGORA DEU ERRO DENOVO
+							i++;
 						}
-						//MUDAR POIS ESTA DUPLICANDO NA HORA DE MOSTRAR ESTAVA DANDO CERTO A REMOCAO MAS AGORA DEU ERRO DENOVO
-						i++;
 					}
+					else
+					{
+						this.listaCompra.add(item);
+						listaCompra.get(k).setValoritem();
+					}
+					totalcompra = calculaTotal(this.listaCompra);
+					mv2.addObject("compra",compra);
+					mv.addObject("compra",compra);
+					this.compra=compra;
+					
+					mv2.addObject("valorcompratotallol",totalcompra);
+					mv2.addObject("listaCompraItens", this.listaCompra);
+					mv.addObject("valorcompratotallol",totalcompra);
+					mv.addObject("listaCompraItens", this.listaCompra);
+					return mv2;
 				}
 				else
 				{
-					this.listaCompra.add(item);
-					listaCompra.get(k).setValoritem();
+					if(this.listaCompra.size()>0)
+					{
+					mv2.addObject("erro", "valor ou quantidade nao pode ser 0");
+					totalcompra = calculaTotal(this.listaCompra);
+					mv2.addObject("valorcompratotallol",totalcompra);
+					mv2.addObject("compra",compra);
+					mv2.addObject("listaCompraItens", this.listaCompra);
+					return mv2;
+					}
+					else
+					{
+						mv.addObject("erro", "valor ou quantidade nao pode ser 0");
+						totalcompra = calculaTotal(this.listaCompra);
+						mv.addObject("valorcompratotallol",totalcompra);
+						mv.addObject("compra",compra);
+						mv.addObject("listaCompraItens", this.listaCompra);
+						return mv;
+					}
 				}
-			
-				totalcompra = calculaTotal(this.listaCompra);
-				mv.addObject("compra",compra);
-				mv.addObject("valorcompratotallol",totalcompra);
-				mv.addObject("listaCompraItens", this.listaCompra);
-				return mv;
 	}else if(acao.equals("remover")|| acao.equals("")){
 		int y=0, i=0;
 		List<CompraItens> listaauxliar= new ArrayList<CompraItens>();
@@ -127,25 +181,36 @@ public ModelAndView salvar(String acao, Compra compra, CompraItens item) {
 			else
 				listaauxliar.add(upp);
 		}
-		
+		if(i==0)
+			for (CompraItens upp : listaCompra)
+			{	
+				if(i<y-1)
+					listaauxliar.add(upp);
+				i++;
+			}
 		listaCompra = listaauxliar;
 		totalcompra = calculaTotal(this.listaCompra);
-		mv.addObject("compra", compra);
-		mv.addObject("valorcompratotallol",totalcompra);
-		mv.addObject("listaCompraItens", this.listaCompra);
-		return mv;
+		mv2.addObject("compra", compra);
+		mv2.addObject("valorcompratotallol",totalcompra);
+		mv2.addObject("listaCompraItens", this.listaCompra);
+		return mv; 
 	}
 	else
 	{
 		if(acao.equals("salvar"))
 		{
+			for (CompraItens compraItens : compraItensRepository.buscarPorCompra(compra.getId())) {
+				Optional <Produto> prod = produtoRepository.findById(compraItens.getProduto().getId());
+				Produto produto = prod.get();
+				produto.setQuantidadeEstoque(produto.getQuantidadeEstoque()-compraItens.getQuantidade());
+				produtoRepository.saveAndFlush(produto);
+			}
 			compraItensRepository.deleteAll(compraItensRepository.buscarPorCompra(compra.getId()));
 			if(!listaCompra.isEmpty())
 			{
 				compraRepository.saveAndFlush(compra);
 				for(CompraItens it: this.listaCompra) 
 				{
-					
 					it.setCompra(compra);
 					if(compra.getTotal()==null)
 						compra.setTotal(0.0);
@@ -161,6 +226,7 @@ public ModelAndView salvar(String acao, Compra compra, CompraItens item) {
 					produtoRepository.saveAndFlush(produto);
 					
 				}
+				this.compra=compra;
 				compraRepository.saveAndFlush(compra);
 				this.listaCompra = new ArrayList<>();
 				mv.addObject("CompraItem", new CompraItens());	
@@ -182,20 +248,31 @@ public ModelAndView salvar(String acao, Compra compra, CompraItens item) {
 			mv.addObject("compra",new Compra());
 			return mv;
 			
-		}else if(acao.equals("excluir"))
+		}else if(acao.equals("excluir") && ex)
 		{
+			for (CompraItens it : listaCompra) {
+				Optional <Produto> prod = produtoRepository.findById(it.getProduto().getId());
+				Produto produto = prod.get();
+				produto.setQuantidadeEstoque(produto.getQuantidadeEstoque()-it.getQuantidade());
+				this.listaCompra = new ArrayList<>();
+				produtoRepository.saveAndFlush(produto);
+			}
+			
+			
 			compraItensRepository.deleteAll(compraItensRepository.buscarPorCompra(compra.getId()));
 			compraRepository.delete(compra);
 			this.listaCompra = new ArrayList<>();
 			totalcompra = calculaTotal(this.listaCompra);
-			mv.addObject("compra",compra);
+			mv.addObject("compra", new Compra());
 			mv.addObject("valorcompratotallol",totalcompra);
 			mv.addObject("listaCompraItens", this.listaCompra);
+			mv.addObject("CompraItem", new CompraItens());
+			return mv;
 		}
 		
 	}
 	mv.addObject("listaCompraItens", this.listaCompra);
-	mv.addObject("compra",new Compra());
+	mv.addObject("compra",compra);
 	return mv;
 }
 
@@ -229,6 +306,21 @@ public ResponseEntity<List<Compra>>  buscarPorCompra() { /* Recebe os dados para
 	return new ResponseEntity<List<Compra>>(usuario, HttpStatus.OK);
 }
 
+@GetMapping(value = "compra/entrada/buscarPorCompraFiltro") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public ResponseEntity<List<Compra>>  buscarPorCompraFiltro(@RequestParam(name = "datalol") String  datalol) { /* Recebe os dados para consultar */
+	List<Compra> nova =  new ArrayList<Compra>();
+	List<Compra> usuario = compraRepository.findAll();
+	for (Compra compra : usuario) {	
+		if(compra.getData().equals(datalol)) {
+			nova.add(compra);
+		}		
+	}
+
+	return new ResponseEntity<List<Compra>>(nova, HttpStatus.OK);
+}
+
+
 @GetMapping(value = "compra/entrada/edicao") /* mapeia a url */
 @ResponseBody /* Descricao da resposta */
 public ResponseEntity<Compra> edicao(@RequestParam(name = "idcompra") Long idcompra) { /* Recebe os dados para consultar */
@@ -236,8 +328,10 @@ public ResponseEntity<Compra> edicao(@RequestParam(name = "idcompra") Long idcom
 	double totalcompra =0;
 	Compra compra = new Compra();
 	compra = compraRepository.findById(idcompra).get();
+	this.compra = compra;
+	
 	List<CompraItens> listacomp =compraItensRepository.buscarPorCompra(compra.getId());
-	totalcompra = calculaTotal(listacomp);
+	this.compraaux = totalcompra = calculaTotal(listacomp);
 	compra.setTotal(totalcompra);
 	mv.addObject("compra",compra);
 	mv.addObject("valorcompratotallol",totalcompra);
@@ -246,6 +340,7 @@ public ResponseEntity<Compra> edicao(@RequestParam(name = "idcompra") Long idcom
 	CompraItens item = new CompraItens();
 	long a = 37;
 	item.setProduto(produtoRepository.getById(a));
+	this.listaCompra = listacomp;
 	return new ResponseEntity<Compra>(compra, HttpStatus.OK);
 }
 
@@ -270,5 +365,49 @@ public void  posfor(@RequestParam(name = "posfor") Long posfor) { /* Recebe os d
 @ResponseBody /* Descricao da resposta */
 public void  posfun(@RequestParam(name = "posfun") Long posfun) { /* Recebe os dados para consultar */
 	this.posfun=posfun;
+	}
+
+@GetMapping(value = "compra/entrada/resultex") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public void  resultex(@RequestParam(name = "ex") Boolean ex) { /* Recebe os dados para consultar */
+	this.ex=ex;
+	}
+
+
+@GetMapping(value = "compra/entrada/excluir") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public void  excluiressaporra(){ /* Recebe os dados para consultar */
+	int i =0, y;
+	y=listaCompra.size();
+	List<CompraItens> listaauxliar= new ArrayList<CompraItens>();
+	listaauxliar = listaCompra ;
+	listaauxliar.remove(0);
+	listaCompra = listaauxliar;
+}
+
+@PostMapping("alterarQuantidadeCompra/{id}")
+@ResponseBody
+public void alterarQuantidade(@RequestParam(name = "id") int id) {
+	this.idnovo = id;
+	/*ModelAndView mv = new ModelAndView("/compra");
+	List<CompraItens> listaauxliar= new ArrayList<CompraItens>();
+	int i=0, y=0;
+	for (CompraItens upp : listaCompra)
+	{
+		y++;
+		if(upp.getProduto().getId() == id)
+			i++;
+		else
+			listaauxliar.add(upp);
+	}
+		listaCompra = listaauxliar;
+		compraaux = calculaTotal(listaauxliar);
+		mv.addObject("compra",this.compra);
+		mv.addObject("valorcompratotallol",compraaux);
+		mv.addObject("listaCompraItens", listaCompra);
+		mv.addObject("listafornecedores", fornecedoresRepository.findAll());
+		mv.addObject("listafuncionario", funcionarioRepository.findAll());;
+	*/
+	
 	}
 }

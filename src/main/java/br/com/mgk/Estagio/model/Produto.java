@@ -26,7 +26,49 @@ private static final long serialVersionUID = 1L;
 	private double quantidadeEstoque=0.;
 	private int ativo=-1;
 	private String nomeImagem;
+	private String peso = "";
+	private Integer codFormato = 0;
+	private Double comprimento = 0.0;
+	private Double altura = 0.0;
+	private Double largura = 0.0;
+	private Double diametro = 0.0;
 	
+	public String getPeso() {
+		return peso;
+	}
+	public void setPeso(String peso) {
+		this.peso = peso;
+	}
+	public Integer getCodFormato() {
+		return codFormato;
+	}
+	public void setCodFormato(Integer codFormato) {
+		this.codFormato = codFormato;
+	}
+	public Double getComprimento() {
+		return comprimento;
+	}
+	public void setComprimento(Double comprimento) {
+		this.comprimento = comprimento;
+	}
+	public Double getAltura() {
+		return altura;
+	}
+	public void setAltura(Double altura) {
+		this.altura = altura;
+	}
+	public Double getLargura() {
+		return largura;
+	}
+	public void setLargura(Double largura) {
+		this.largura = largura;
+	}
+	public Double getDiametro() {
+		return diametro;
+	}
+	public void setDiametro(Double diametro) {
+		this.diametro = diametro;
+	}
 	public long getId() {
 		return id;
 	}

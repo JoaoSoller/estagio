@@ -63,6 +63,10 @@ html {
   <label for="text" class="form-label">Senha</label>
   <input type="password" class="form-control"  placeholder="Informe a senha" id="senha">
 </div>
+<div class="mb-3">
+  <label for="text" class="form-label">Cep</label>
+  <input type="text" class="form-control"  placeholder="Informe o cep" id="cep">
+</div>
 </form>
 <button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
 <button type="button" class="btn btn-secondary" onclick="document.getElementById('formCadastroUser').reset();">Novo</button>
@@ -202,7 +206,9 @@ function deleteUser(id){
 	  }
   }
   
-  function colocarEmEdicao(id) {  
+  function colocarEmEdicao(id) { 
+  var input = document.getElementById('senha');
+  var input2 = document.getElementById('login');
 	  $.ajax({
 			method : "GET",
 			url : "cliente/cadastro/buscarclienteid",
@@ -215,9 +221,12 @@ function deleteUser(id){
 				$("#endereco").val(response.endereco);
 				$("#cidade").val(response.cidade);
 				$("#cpf").val(response.cpf);
-				$("#senha").val(response.senha);
+				$("#cep").val(response.cep);
 				$("#login").val(response.login);
-				
+				$("#frete").val(response.frete);
+				$("#senha").val(response.senha);
+				input.readOnly = true; 
+				input2.readOnly = true; 
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao buscar cliente por id: " + xhr.responseText);
@@ -237,6 +246,7 @@ function deleteUser(id){
 		var cpf = $("#cpf").val();
 		var senha =	$("#senha").val();
 		var login =	$("#login").val();
+		var cep =	$("#cep").val();
 		
 		if (nome == null || nome != null && nome.trim() == ''){
 			$("#nome").focus();
@@ -279,6 +289,7 @@ function deleteUser(id){
 				endereco : endereco,
 				cidade : cidade,
 				senha : senha,
+				cep : cep,
 				login : login
 			}),
 			contentType : "application/json; charset=utf-8",

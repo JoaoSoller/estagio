@@ -11,7 +11,7 @@
 html {
     margin-left: 5%;
     margin-right: 5%;
-    margin-top: 5%;
+ 
 }
 </style>
 </head>
@@ -23,74 +23,76 @@ html {
 
 <form action="salvar" id="formCadastroUser" th:object="${compra}" method="post" enctype="multipart/form-data">
 <div class="form-row">
-	<div class="mb-3">
+<div class="mb-3">
 	<div class="mb-3">
   <label for="nome" class="form-label">ID da Compra</label>
   <input type="text" class="form-control " th:field="*{id}" id="compraid"  readonly="readonly" required="required"><br>
 </div>
-	<label for="nome" class="form-label">Fornecedor</label>
-	  <select th:field="*{fornecedor}"  class="btn btn-secondary dropdown-toggle" id="fornecedor-lol" onchange ="minhafuncao();" required="required">
-		  <option value=""> Escolha o fornecedor</option>
+
+<label for="nome" class="form-label">Fornecedor</label>
+	  <select th:field="*{fornecedor}"  class="btn-secondary dropdown-toggle" id="fornecedor-lol" onchange ="minhafuncao();habiltasalvar();" required="required">
+		  <option value="">Escolha o fornecedor</option>
 		  <option th:each="fornecedorlol : ${listafornecedores}"
 		  					th:value="${fornecedorlol.id}"
 		  				    th:text="${fornecedorlol.nomefantasia}">
 		  </option>
 	  </select>
-	</div>
-	<div class="mb-3">
+	
 	<label for="nomefunc" class="form-label btn">Funcionario</label>
-	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle"  id="funcionario-lol"  onchange ="minhafuncao();">
-    <option value=""> Escolha o funcionario</option>
+	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle"  id="funcionario-lol"  onchange ="minhafuncao();habiltasalvar();"  required="required">
+    <option value="">Escolha o funcionario</option>
     <option th:each="funcionariolol : ${listafuncionario}"
 		  					th:value="${funcionariolol.id}"
 		  				    th:text="${funcionariolol.nome}">
 		  </option>		
 	  </select>
+	
 	</div>
 </div>
-
 <div class="form-row" th:object="${CompraItem}">
 	<div class="form-row">
-		<div class="mb-3">
-		  <label for="nome" class="form-label">ID do Produto</label>
-		  <input type="text" class="form-control" th:field="*{produto.id}" id="idproduto"  readonly="readonly" required="required"><br>
-		</div>
 	
-		<div class="mb-3">
-		  <label for="nome" class="form-label">Nome do Produto</label>
-		  <input type="text" class="form-control" th:field="*{produto.nome}" id="nome"  readonly="readonly" required="required"><br>
-		  <button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pesquisar</button>
-		</div>
+		  <label for="nome" class="form-label">ID do Produto     </label>
+		  <input type="text" th:field="*{produto.id}" id="idproduto"  readonly="readonly" required="required" onchange="">
+	
+		  <label for="nome" class="form-label">Nome do Produto     </label>
+		  <input type="text"  th:field="*{produto.nome}" id="nome"  readonly="readonly" required="required">
 	
 	
-		<div class="mb-3">
-		  <label for="nome" class="form-label">Estoque do Produto</label>
-		</div>
+			  <label for="nome" class="form-label">Quantidade do Produto     </label>
+		 	  <input type="text"  th:field="*{produto.quantidadeEstoque}" id="produtoqtde"  required="required" readonly="readonly"><br><br>
+			  <button type="button" class="btn btn-primary"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pesquisar</button>
+			  <button type="submit" id="add" name="acao" th:value="itens" class="btn btn-primary" onclick ="minhafuncao();salvar();">Adicionar</button>		
+				
+	</div><br>
 		
 		<div class="mb-3">
 		  <label for="valor" class="form-label">Valor</label>
-		  <input type="number" class="form-control" id="valor"  th:field="*{valor}" placeholder="Informe o valor" value="">
-		</div>
-	
-		<div class="mb-3">
+		  <input type="number"  id="valor"  th:field="*{valor}" placeholder="Informe o valor" onchange="habiltasalvar();">	
+		
 		  <label for="quantidade" class="form-label">Quantidade</label>
-		  <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}" placeholder="Informe a quantidade" required="required">
+		  <input type="number" id="quantidade" th:field="*{quantidade}" placeholder="Informe a quantidade" required="required" onchange="habiltasalvar();">
 		</div>
 		
 		<div class="mb-3">
-		  <label for="quantidade" class="form-label">Valor Total da Compra</label>
+		<label for="quantidade" class="form-label">Valor Total da Compra</label>
 		<input type="number" class="form-control" th:text="${valorcompratotallol}" id="compratotal" placeholder="Total da compra" required="required" readonly="readonly">
 		
 		</div>
 		
 	</div>
 </div>
- 
+<button disabled type="submit" class="btn btn-primary"  id="salvar"name="acao" th:value="salvar" onclick="limpar();">Salvar</button>
+<button type="submit" class="btn btn-primary" name="acao" th:value="salvar" onclick="pesquisarCompra();habilitarnovo();">Pesquisar</button>
+<button disabled type="submit" class="btn btn-primary" id="novo" name="acao" th:value="novo">Novo</button>
+<button disabled type="submit" class="btn btn-primary" id="excluir" name="acao" th:value="excluir"  onclick="criarButton(); minhafuncao();">Excluir</button>
+
 <div class="form-row" th:object="${CompraItem}" >
 	<div class="form-group col-md-6">
 		<table class="table" id="tabelaItens">
 		  <thead>
 		    <tr>
+		      <th scope="col">ID</th>
 		      <th scope="col">Nome</th>
 		      <th scope="col">Quantidade</th>
 	          <th scope="col">Valor Venda</th>
@@ -99,14 +101,18 @@ html {
 		    </tr>
 		  </thead>
 		  <tbody>
-		    <tr  th:each="entradaslol : ${listaCompraItens}">
+		    <tr  th:each="entradaslol : ${listaCompraItens}" id="minhaTabela">
+		      <td class="preco" th:text="${entradaslol.produto.id}" ></td>
 		      <td th:text="${entradaslol.produto.nome}"></td>
 		      <td th:text="${entradaslol.quantidade}"></td>
 		      <td th:text="${entradaslol.valor}"></td>
 		      <td th:text="${entradaslol.valoritem}"></td>
-		      <td> 
-	                      <button type="submit" name="acao" th:value="remover" class="btn btn-primary" onclick ="minhafuncao();">Remover</button>
-	          </td>
+		      <td>   
+		               			         	
+	    
+				<button type="submit" name="acao" th:value="remover" onmouseover="minhafuncao();"  class="btn btn-primary btn-xs excluir"	 >Remover</button>
+				      
+	      	  </td>
 		   
 		    </tr>
 		  </tbody>
@@ -114,11 +120,7 @@ html {
 	</div>
 </div>
 <div class=" alert alert-danger" role="alert" th:text="${erro}"> </div>
-<button type="submit" id="add" name="acao" th:value="itens" class="btn btn-primary" onclick ="minhafuncao()">Adicionar</button>
-<button type="submit" class="btn btn-primary"  name="acao" th:value="salvar" onclick="limpar();">Salvar</button>
-<button type="submit" class="btn btn-primary" name="acao" th:value="salvar" onclick="pesquisarCompra();">Pesquisar</button>
-<button type="submit" class="btn btn-primary" name="acao" th:value="novo">Novo</button>
-<button type="submit" class="btn btn-primary" name="acao" th:value="excluir">Excluir</button>
+
 <div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -132,7 +134,7 @@ html {
             <label for="nameBusca" class="col-form-label">Informe o nome:</label>
             <input type="text" class="form-control" id="nameBusca">
           </div>
-          <button type="button" class="btn btn-success" onclick="pesquisarUser();">Buscar</button><br>
+          <button type="button" class="btn btn-success" onclick="pesquisarUser(); ">Buscar</button><br>
         </form>
 
 				<div style="height: 300px;overflow: scroll;">
@@ -156,15 +158,19 @@ html {
     </div>
   </div>
 </div>
+
+<label for="nome" class="form-label">Filtro por Data                :</label>
+<input type="date"   id="dtpesquisar"  required="required">
+<button type="submit" class="btn btn-primary" onclick="filtro(); minhafuncao();">Pesquisar</button>
+
 	
 
 <table class="table" id="tabelaresultadosCompra">
 		<thead>
 			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">Valor</th>
+				<th scope="col">Data</th>
+				<th scope="col">Fornecedor</th>
 				<th scope="col">Editar</th>
-				<th scope="col">Delete</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -180,6 +186,27 @@ html {
 
 
 <script type="text/javascript">
+
+function habiltasalvar()
+{
+var selectElem = document.getElementById('fornecedor-lol');
+pos1 =selectElem.selectedIndex;
+var selectElem2 = document.getElementById('funcionario-lol');
+pos2 =selectElem2.selectedIndex;
+var id = $("#idproduto").val();
+var quantidade = $("#quantidade").val();
+var valor = $("#valor").val();
+
+	if ( nome != '' && valor !='0' && valor !='' && quantidade !='0' && quantidade !='' && pos2>0 && pos1>0 && id>0)
+	{
+		document.getElementById("salvar").disabled = false;
+	}
+	else
+	{
+		document.getElementById("salvar").disabled = true;
+	}
+}
+
 
 function limpartudou(){
 
@@ -250,6 +277,7 @@ function deleteUser(id){
 
 				$("#nome").val(response.nome);
 				$("#idproduto").val(response.id);
+				$("#produtoqtde").val(response.quantidadeEstoque);
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao produto por id: " + xhr.responseText);
@@ -257,6 +285,7 @@ function deleteUser(id){
 	  
 	  
   }
+	
 		function pesquisarCompra(){
 		$("#compratotal").val(null); 
 	  $.ajax({
@@ -268,7 +297,7 @@ function deleteUser(id){
 					
 					for (var i = 0; i < response.length; i++){
 						$('#tabelaresultadosCompra > tbody').append
-						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].total+'</td><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+						('<tr id="'+response[i].id+'"><td>'+response[i].data+'</td><td>'+response[i].fornecedor.nomefantasia+'</td><td><button type="button" onclick="habilitarexcluir();minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
 					}
 				  
 				}
@@ -277,9 +306,10 @@ function deleteUser(id){
 			});		  
 	  
   }
-  
+
 
   function colocarEmEdicaoCompra(id) { 
+   this.id = id;
    var marcacb = document.getElementById("fornecedor-lol");
    var categoriacb = document.getElementById("funcionario-lol");
    var compratotallol = document.getElementById("compratotal");
@@ -306,8 +336,8 @@ function deleteUser(id){
 							
 							$('#tabelaItens > tbody > tr').remove();
 							for (var i = 0; i < response.length; i++){
-							$('#tabelaItens > tbody').append
-							('<tr id="'+response[i].id+'"><td>'+response[i].nome+'</td><td>'+response[i].quantidade+'</td><td>'+response[i].valor+'</td><td>'+response[i].valoritem+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs" onclick="colocarEmEdicao(response[i].produto.id})">Remover</button></td></tr>');
+							$('#tabelaItens > tbody').append 
+							('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td>'+response[i].quantidade+'</td><td>'+response[i].valor+'</td><td>'+response[i].valoritem+'</td><td><button onmousemove="colocarEmEdicao('+response[i].idproduto+')" type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
 							}
 				
 				}
@@ -317,26 +347,24 @@ function deleteUser(id){
 		});
 		
   }
-  
-  
+ 
+function habilitarexcluir(){
+document.getElementById("excluir").disabled = false;
+}
+
+function habilitarnovo(){
+document.getElementById("novo").disabled = false;
+}
  
 function minhafuncao()	
 {
-	var selectElem = document.getElementById('fornecedor-lol');
-	pos1 = selectElem.selectedIndex;
+	document.getElementById("novo").disabled = false;
 	var selectElem2 = document.getElementById('funcionario-lol');
 	pos2 =selectElem2.selectedIndex;
-	console.log(pos1);
-	console.log(pos2);
-  $.ajax({
-				method : "GET",
-				url : "posfor",
-				data : "posfor=" + pos1 ,
-				success : function(response) {
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert("Erro ao buscar produto: " + xhr.responseText);
-			});		
+	var selectElem1 = document.getElementById('fornecedor-lol');
+	pos1 =selectElem2.selectedIndex;
+
+		
   
   $.ajax({
 				method : "GET",
@@ -346,11 +374,83 @@ function minhafuncao()
 				}
 			}).fail(function(xhr, status, errorThrown) {
 				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		
+			
+			 
+  $.ajax({
+				method : "GET",
+				url : "posfor",
+				data : "posfor=" + pos1 ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
 			});					  
 	}
 
+function criarButton(){
+	
+	var resultado = confirm("Voce deseja Excluir?");
+	
+		  $.ajax({
+				method : "GET",
+				url : "resultex",
+				data : "ex=" + resultado ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});
+	if(resultado)
+	{
+		alert("Compra excluida!")	
+	}
+	else{
+	alert("Compra nao excluida!")	
+	}
+}
 
+
+
+$( "button.excluir" ).click(function() {
+        $(this).parent().parent().remove();
+        
+          $.ajax({
+				method : "GET",
+				url : "excluir",
+				data : " " ,
+				success : function() {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});
+    });
+
+function filtro(){
+
+	  var datalol = $('#dtpesquisar').val();
+	
+		$("#compratotal").val(null); 
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorCompraFiltro",
+				data : "datalol=" + datalol,
+				success : function(response) {
+					$('#tabelaresultadosCompra > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].data+'</td><td>'+response[i].fornecedor.nomefantasia+'</td><td><button type="button" onclick="minhafuncao();habilitarexcluir();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  
   
+}    
+    
 </script>
 </body>
 </html>

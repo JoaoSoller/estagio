@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="ISO-8859-1">
+ <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=10, minimum-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 <title>Finalizar</title>
 
     <!-- Bootstrap CSS -->
@@ -9,16 +16,76 @@
 
 <style type="text/css">
 
-html {
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-top: 5%;
-}
+
 </style>
 </head>
 
 <body>
+  <header>
 
+        <div class="li-gameBar">
+            <div class="li-gameBar1">
+                <img src="images/Plane.svg" class="li-gameBar-imagem"></img> 
+                <div class="li-gameBar1-texto"> Frete grátis a partir de R$ 299,90</div>
+            </div>
+            <div class="li-gameBar2">
+                <img src="images/Gift.svg" class="li-gameBar-imagem"></img> 
+                <div class="li-gameBar2-texto">Ganhe um brinde a partir de R$ 359,90</div>
+            </div>
+        </div>
+
+        <div class="li-barra2">
+                <div class="li-lojas">
+                    <div class="li-lojas-imagem"></div>
+                    <a href="https://www.google.com.br/maps/dir/-22.145798,-51.397339/mgk+diesel/@-22.0104905,-51.9045823,10z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x949164bb67e294f5:0x406ec60fe3531ebd!2m2!1d-51.8606511!2d-21.8866593?hl=pt-BR" class="li-barra2-texto">Nossa loja</a>
+                </div>
+                <div class="li-atendimento">
+                    <div class="li-atendimento-imagem"></div>
+                    <a href="https://api.whatsapp.com/send?phone=5518981495558&text=Bom%20dia%2C%20gostaria%20de%20entrar%20em%20contato%20com%20algum%20funcion%C3%A1rio%20da%20MGK%20Diesel." class="li-barra2-texto">Atendimento ao cliente</a>
+                </div>
+                <div class="li-desconto">
+                    <div class="li-desconto-imagem"></div>
+                    <div class="li-desconto-texto">Ganhe <span class="li-negrito">10% </span> compras acima de 1,000</div>
+                </div>
+                <div class="li-barra2-divisao"></div>
+                <div class="li-perfil"> <a href="clilogout" class="li-barra2-texto" >'</a></div>
+                <div class="li-barra2-divisao"></div>
+                <div class="li-barra2-sacola">
+                    <div class="li-sacola"></div>
+                    <a href="/carrinho">
+	                    <div class="li-notificacao-sacola">
+	                        <div class="li-notificacao-numero" th:text="${carrinqnt}"></div>
+	                    </div>
+                    </a>
+                </div>
+        </div>
+
+        <div class="li-separacao"></div>
+
+        <div class="li-barra3">
+            
+            
+            <nav class="li-menu">
+              	<a href="inicio-tcc">Pagina Inicial</a>
+                <a href="motorrel">Motor</a>
+                <a href="bateriarel">Bateria</a>
+                <a href="rodarel">Rodas e Pneus</a>
+                <a href="suspensaorel">Suspensão</a>
+            </nav>
+            <div class="li-busca">
+
+            </div>
+            <div class="li-bar-menu">
+
+            </div>   
+
+         
+        </div>
+
+        <div class="li-separacao"></div>
+
+
+    </header>
 	<!-- Page Content -->
 	<div class="container" layout:fragment="corpo">
 		<form action="/finalizar" method="post">
@@ -30,39 +97,31 @@ html {
 				</div>
 
 
-				<div class="col-6">
-					<select class="form-control" name="formaPagamento">
-						<option value="Cart�o de Cr�dito">Cartao de Credito</option>
-						<option value="Cart�o de D�bito">Cartao de Debito</option>
-						<option value="Boleto">Boleto</option>
-						<option value="Transfer�ncia">Transferencia</option>
-					</select>
-				</div>
-
+				
 
 				<div class="col-12">
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<thead>
 								<tr>
-									<th scope="col"></th>
+
 									<th scope="col">Produto</th>
 									<th scope="col">Estoque</th>
-									<th scope="col" class="text-center">Quantidade</th>
+									<th scope="col" class="text-right">Quantidade</th>
 									<th scope="col" class="text-right">Valor Unitario</th>
+									<th scope="col" class="text-right">Desconto</th>
 									<th scope="col" class="text-right">Valor Total</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="item : ${listaItens}">
-									<td><img src="https://dummyimage.com/50x50/55595c/fff" />
-									</td>
 									<td th:text="${item.produto.nome}"></td>
 									<td>Em estoque</td>
 									<td><span th:text="${item.quantidade}"></span></td>
 
 									<td class="text-right" th:text="${item.valorUnitario}"></td>
+									<td class="text-right" th:text="${item.desconto}"></td>
 									<td class="text-right" th:text="${item.valorTotal}"></td>
 									<td class="text-right"></td>
 								</tr>
@@ -73,20 +132,44 @@ html {
 									<td></td>
 									<td></td>
 									<td></td>
+									<td></td>
 									<td>Sub-Total</td>
 									<td class="text-right"><span
 										th:text="${pedido.valorTotal}"></span></td>
 								</tr>
+									<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>Desconto</td>
+									<td class="text-right"><span
+										th:text="${pedido.desconto}"></span></td>
+								</tr>
 								<tr>
+									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
 									<td>Frete</td>
-									<td class="text-right">0,00</td>
+									<td class="text-right" th:text="${valor}"></td>
 								</tr>
 								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>Prazo(Dias)</td>
+									<td class="text-right" th:text="${prazo}"></td>
+								</tr>
+								<tr>
+									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -94,7 +177,7 @@ html {
 									<td></td>
 									<td><strong>Total</strong></td>
 									<td class="text-right"><strong><span
-											th:text="${pedido.valorTotal}"></strong></td>
+											th:text="${pedido.valorFinal}"></strong></td>
 								</tr>
 							</tbody>
 						</table>
@@ -105,10 +188,18 @@ html {
 					<div class="row">
 						<div class="col-sm-12  col-md-6"></div>
 						<div class="col-sm-12 col-md-6 text-right">
-							<button class="btn btn-lg btn-block btn-success text-uppercase">Confirmar
-								a Compra</button>
+							<a class="btn btn-primary" th:href="@{/pagamento}"
+							 role="button"><i class="bi bi-plus-lg"></i>Cartao de Credito</a>
+					
+       
+      		  <button type="button" class="btn btn-primary"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pagamento no Debito</button>
+			
+        </div>
+           
 						</div>
 					</div>
+			
+					
 				</div>
 
 
@@ -119,6 +210,158 @@ html {
 
 	</div>
 	<!-- /.container -->
+  <footer>
 
+        <div class="li-footer-grupo1">
+            <div class="li-fotter-opcoes">
+                <div class="li-grupo1-sobre li-box">
+                    <h2>Sobre</h2>
+                    <ul>
+                        <li class="li-lista">
+                            <a href="">A MGK</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="li-grupo1-ajuda li-box">
+                    <h2>Fale conosco</h2>
+
+                    <ul>
+                        <li class="li-lista">
+                            <a href="">+55 18 98149-5558</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="li-grupo1-siga li-box">
+                    <h2>Siga a Logoipsum</h2>
+                    <div class="li-social">
+                        <a href="https://www.instagram.com/mgkdiesel/">
+                            <div class="li-instagram">
+                            <img src="images/Instagram.png" alt="">
+                            </div>
+                        </a>
+                        <a href="https://www.facebook.com/MGK-diesel-102493321477950/">
+                            <div class="li-facebook">
+                            <img src="images/facebook.png" alt="">
+                        </div>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="li-grupo1-pagamento li-box">
+                    <h2>Pagamento</h2>
+                    <div class="li-pagamento">
+                        <div class="li-box-pagamento">
+                            <img src="images/visa@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/mastercard@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/amex@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/boleto@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/elo@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/diners@2x (1) 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/hiper@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/hipercard@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/moip@2x 1.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="li-footer-grupo2">
+            <div class="li-grupo2-main">
+             
+                <div class="li-grupo2-texto">
+                    <p>Peças e Acessórios com qualidade, garantia, nota e bom preço. Além de um bom atendimento para atender a necessidade do cliente.
+                    </p>
+                    <p>A melhor autopeça da região, com mais de 30 anos no mercado, atendendo todas as marcas e modelos</p>
+                    <p>RH@mgkdiesel.com.br • Avenida Marginal, 490 - Parque Nico More, Pres. Venceslau - SP, 19400-000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="li-copyright">
+            <div class="li-copyright-texto">Copyright <span class="li-copyright-negrito">MGK DIESEL AutoPeças</span> -  2020. Todos os direitos reservados</div>
+        </div>
+        
+ <div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Deseja Finalizar o pedido?</h5>
+     
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Atenção quando finalizar o pedido não será possivel desfazer.</p>
+      </div>
+      <div class="modal-footer">
+           <a type="submit" class="btn btn-primary" th:href="@{/pedidook}">Finalizar Pagamento</a>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+ <!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript">
+function criarbutton(){
+	var selectElemcategoria = document.getElementById('categoriacb')
+	var pos2 = selectElemcategoria.selectedIndex;	
+	if(pos2==0)
+	{
+	  $.ajax({
+			method : "GET",
+			url : "pagamento",
+			data : " ",
+			success : function() {
+				
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro ao buscar Categoria id: " + xhr.responseText);
+		});
+	}	  
+}
+
+function minhafuncao()	
+{
+	var selectElem1 = document.getElementById('categoriacb');
+	modo =selectElem2.selectedIndex;			
+			 
+  $.ajax({
+				method : "GET",
+				url : "modo",
+				data : "modo=" + modo ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});					  
+	}
+</script>
 </body>
 </html>

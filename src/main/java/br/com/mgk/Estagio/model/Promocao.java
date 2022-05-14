@@ -20,14 +20,15 @@ import javax.persistence.TemporalType;
 		@Id 
 		@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_promocao")
 		private long id;
-		@Temporal(TemporalType.DATE)
-		private Date dtini;
-		@Temporal(TemporalType.DATE)
-		private Date dtfim;
+		private String dtini;
+		private String dtfim;
 		private String nome;
+		private double porcentagem;
 		@ManyToOne
 		private Funcionario funcionario;
-		private long posfun;
+		private long posfun =0;
+		private String categoria;
+		
 		
 		public long getPosfun() {
 			return posfun;
@@ -38,20 +39,26 @@ import javax.persistence.TemporalType;
 		public long getId() {
 			return id;
 		}
+		public double getPorcentagem() {
+			return porcentagem;
+		}
+		public void setPorcentagem(double porcentagem) {
+			this.porcentagem = porcentagem;
+		}
 		public void setId(long id) {
 			this.id = id;
 		}
 		
-		public Date getDtini() {
+		public String getDtini() {
 			return dtini;
 		}
-		public void setDtini(Date dtini) {
+		public void setDtini(String dtini) {
 			this.dtini = dtini;
 		}
-		public Date getDtfim() {
+		public String getDtfim() {
 			return dtfim;
 		}
-		public void setDtfim(Date dtfim) {
+		public void setDtfim(String dtfim) {
 			this.dtfim = dtfim;
 		}
 		public String getNome() {
@@ -65,6 +72,12 @@ import javax.persistence.TemporalType;
 		}
 		public void setFuncionario(Funcionario funcionario) {
 			this.funcionario = funcionario;
+		}
+		public String getCategoria() {
+			return categoria;
+		}
+		public void setCategoria(String categoria) {
+			this.categoria = categoria;
 		}
 		
 }

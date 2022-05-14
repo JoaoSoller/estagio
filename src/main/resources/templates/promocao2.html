@@ -1,0 +1,567 @@
+	<!DOCTYPE html><html lang="pt-br">
+<head>
+<meta charset="ISO-8859-1">
+<title>Promocao de Produtos</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<style type="text/css">
+
+html {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+}
+</style>
+</head>
+
+<body>
+
+<h3>Promocao de Produto</h3>
+
+
+<form action="salvar" id="formCadastroUser" th:object="${promocao}" method="post" enctype="multipart/form-data">
+<div class="form-row">
+<div class="mb-3">
+  <label for="nome" class="form-label">ID da Promocao</label>
+  <input type="text" class="form-control " th:field="*{id}" id="promocaoid"  readonly="readonly"><br>
+</div>
+	<div class="mb-3">
+	<label for="nomefunc" class="form-label btn">Funcionario</label>
+	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle" onchange ="minhafuncao();habilitarnovo();habiltasalvar();" id="funcionario-lol" >
+    <option value="" > Escolha o funcionario</option>
+    <option th:each="funcionariolol : ${listafuncionario}"
+		  					th:value="${funcionariolol.id}"
+		  				    th:text="${funcionariolol.nome}">
+		  </option>		
+	  </select>
+	</div>
+	<div class="mb-3">
+		 <label for="nome" >   Nome Promocao  </label>
+ 		 <input type="text" th:field="*{nome}" id="nomepromocao"  onchange="habiltasalvar();">
+	
+		 <label for="nome" >  Porcentagem % </label>
+ 		 <input type="number" th:field="*{porcentagem}" onchange="habiltasalvar();">
+	
+		 <label for="nome" class="form-label">Data Inicial</label>
+ 		 <input type="date" id="dtini" oninput="mascara(this,'data')" th:field="*{dtini}" onchange="habiltasalvar();">
+
+		 <label for="nome" class="form-label">Data Final</label>
+ 		 <input type="date" oninput="mascara(this,'data')" id="dtfim" th:field="*{dtfim}" onchange="habiltasalvar();">
+ 		
+	</div>
+</div>
+
+<div class="mb-3">
+  <label for="valor" class="form-label">Categoria</label>
+  <button  type="button"  class="btn btn-primary"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser"  onclick="habiltasalvar();">Pesquisar</button>
+  <button  type="submit" id="Adiciona" name="acao" th:value="chatuba" class="btn btn-primary" onclick="validar();habilitarnovo();habiltasalvar();" >Adicionar</button>
+    <input type="text" id="nomecat" readonly="readonly">
+     <button  type="submit" name="acao" th:value="chatuba" class="btn btn-primary" onclick="validar();habilitarnovo();habiltasalvar();" >Calcular</button>  
+    
+</div>
+
+<div class="form-row" >
+	<div class="form-group col-md-6">
+	<table class="table" id="tabelaItens" onchange="habilitarnovo()">
+	  <thead>
+	    <tr>
+		  <th scope="col">Nome</th>
+          <th scope="col">Valor sem desconto</th>
+     	  <th scope="col">Valor com desconto</th>
+     	   <th scope="col">Desconto</th> 
+	      <th scope="col">Acao</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr  th:each="entradaslol : ${listaPromocaoItens}" onchange="habilitarnovo();">
+	  
+	 	   <td th:text="${entradaslol.produto.nome}"></td>
+	      	<td th:text="${entradaslol.precoantigo}"></td>
+	       <td th:text="${entradaslol.preconovo}"></td>
+	        <td th:text="${entradaslol.desconto}"></td>
+	      <td> 
+                      <button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs" onclick="validar();">Remover</button>
+          </td>
+	   
+	    </tr>
+
+	  </tbody>
+	</table>
+	</div>
+</div>
+<div class="alert alert-danger" role="alert" th:text="${erro}"> </div>
+<button type="submit" class="btn btn-primary" id="salvar"  name="acao" th:value="salvar" onclick="limpar(); validar();">Salvar</button>
+<button type="submit" class="btn btn-primary" name="acao" th:value="xumbada" onclick="pesquisarPromocao();">Pesquisar</button>
+<button type="submit" class="btn btn-primary" name="acao" id="novo" th:value="novo">Novo</button>
+
+
+
+
+
+<div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Categoria</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="nameBusca" class="col-form-label">Informe o nome:</label>
+            <input type="text" class="form-control" id="nameBusca">
+          </div>
+          <button type="button" class="btn btn-success" onclick="pesquisarUser()">Buscar</button>
+        </form>
+
+				<div style="height: 300px;overflow: scroll;">
+					<table class="table" id="tabelaresultados">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Editar</th>
+								<th scope="col">Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+<label for="nome" class="form-label">Filtro por Data                :</label>
+<input type="date"   id="dtpesquisar"  required="required">
+<button type="submit" class="btn btn-primary" onclick="filtro(); minhafuncao();">Pesquisar</button>
+
+	
+
+<table class="table" id="tabelaresultadosCompra">
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Nome</th>
+				<th scope="col">Editar</th>
+				<th scope="col">Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+		
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+ <!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+function habiltasalvar(){
+var selectElem2 = document.getElementById('funcionario-lol');
+pos2 =selectElem2.selectedIndex;
+var id = $("#promoid").val();
+var nome = $("#nomepromocao").val();
+var dataini =document.getElementById('dtini');
+var datafim = document.getElementById('dtfim');
+
+var porcentagem = $("#porcentagem").val();
+	if ( nome != '' && dataini.value != '' && datafim.value != '' && porcentagem !='0.0' && porcentagem !='' && pos2>0)
+	{
+		document.getElementById("salvar").disabled = false;
+		
+	}
+	else
+	{
+		document.getElementById("salvar").disabled = true;
+	
+	}
+}
+function habilitarexcluir(){
+document.getElementById("excluir").disabled = false;
+}
+
+function habilitarnovo(){
+document.getElementById("novo").disabled = false;
+}
+
+function limpar(){
+	$("#nome").va
+	
+}
+
+function validar(){
+	var id = $("#id").val();
+	var nome = $("#nomepromocao").val();
+	var dataini = $("#dataini").val();
+	var datafim = $("#datafim").val();
+	
+	
+		if (nome == null || nome != null && nome.trim() == ''){
+			$("#nome").focus();
+			alert('Informe o nome');
+			return;
+		}
+		
+	
+	
+}
+function botaoDeletarDaTela(){
+	var id = $('#id').val();
+	
+	if(id != null && id.trim() != ''){
+	 deleteUser(id);	
+	}
+
+}
+
+
+
+function deleteUser(id){
+	if(confirm('Deseja realmente deletar?')) {
+	 $.ajax({
+			method : "DELETE",
+			url : "/deletatudo",
+			data : "idproduto=" + id ,
+			success : function(response) {
+			
+				$('#'+ id).remove();
+				alert(response);	
+				document.getElementById('formCadastroUser').reset();	
+		}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Este produto nao pode ser excluido");
+		});
+	}	
+}
+function mascara(i,t)
+{
+   
+   var v = i.value;
+   
+   if(isNaN(v[v.length-1])){
+      i.value = v.substring(0, v.length-1);
+      return;
+   }
+   
+   if(t == "data"){
+      i.setAttribute("maxlength", "10");
+      if (v.length == 2 || v.length == 5) i.value += "/";
+   }
+
+   if(t == "cpf"){
+      i.setAttribute("maxlength", "14");
+      if (v.length == 3 || v.length == 7) i.value += ".";
+      if (v.length == 11) i.value += "-";
+   }
+
+   if(t == "cnpj"){
+      i.setAttribute("maxlength", "18");
+      if (v.length == 2 || v.length == 6) i.value += ".";
+      if (v.length == 10) i.value += "/";
+      if (v.length == 15) i.value += "-";
+   }
+
+   if(t == "cep"){
+      i.setAttribute("maxlength", "9");
+      if (v.length == 5) i.value += "-";
+   }
+
+   if(t == "tel"){
+      if(v[0] == 9){
+         i.setAttribute("maxlength", "10");
+         if (v.length == 5) i.value += "-";
+      }else{
+         i.setAttribute("maxlength", "9");
+         if (v.length == 4) i.value += "-";
+      }
+   }
+}
+
+  
+  function pesquisarUser(){
+     
+  	
+	  var nome = $('#nameBusca').val();
+	  if (nome != null && nome.trim() != ''){
+		  $.ajax({
+				method : "GET",
+				url : "/buscarPorNometudo",
+				data : "name=" + nome ,
+				success : function(response) {
+					$('#tabelaresultados > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultados > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="habiltasalvar();colocarEmEdicaoNovidade('+response[i].id+');" class="btn btn-primary">Adicionar</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  }
+  }
+
+  function colocarEmEdicao(id) {  
+  	  $.ajax({
+			method : "GET",
+			url : "/buscarprodutoidtudo",
+			data : "idproduto=" + id ,
+			success : function(response) {
+			Location.reload()
+				
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro ao produto por id: " + xhr.responseText);
+		});
+		
+	  
+	  
+  }
+	
+function minhafuncao()	
+	{
+	var selectElem2 = document.getElementById('funcionario-lol');
+	pos2 =selectElem2.selectedIndex;
+	
+  
+  		$.ajax({
+				method : "GET",
+				url : "posfun",
+				data : "posfun=" + pos2 ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});					  
+	}
+	
+	function pesquisarCompra(){ 
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorPromocao",
+				data : " ",
+				success : function(response) {
+					$('#tabelaresultadosCompra > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="habiltasalvar();colocarEmEdicaoCompra('+response[i].id+');colocarCategoria('+response[i].nome+');" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  
+  }
+  
+
+  function colocarEmEdicaoCompra(id) { 
+   var funcionariocb = document.getElementById("funcionario-lol");
+  	  $.ajax({
+			method : "GET",
+			url : "edicao",
+			data : "idcompra=" + id ,
+			success : function(response) {
+						$("#promocaoid").val(response.id);
+						$("#nomepromocao").val(response.nome);
+						$("#dtini").val(response.dtini);
+						$("#dtfim").val(response.dtfim);
+							$("#porcentagem").val(response.porcentagem);
+						funcionariocb.selectedIndex = response.posfun;
+
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+	 
+		   $.ajax({
+				method : "GET",
+				url : "buscarListaItem",
+				data : "idcompra=" + id ,
+				success : function(response) {
+		
+							$('#tabelaItens > tbody > tr').remove();
+							for (var i = 0; i < response.length; i++){
+							$('#tabelaItens > tbody').append
+							('<tr id="'+response[i].id+'"><td>'+response[i].produto.nome+'</td><td>'+response[i].precoantigo+'</td><td>'+response[i].preconovo+'</td><td>'+response[i].desconto+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
+							}
+				
+				}
+	  
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+		
+  }
+  
+	function pesquisarPromocao(){
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorPromocao",
+				data : " ",
+				success : function(response) {
+					$('#tabelaresultadosCompra > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  
+  }
+  
+
+  function colocarEmEdicaoPromocao(id) { 
+   this.id = id;
+   var marcacb = document.getElementById("fornecedor-lol");
+   var categoriacb = document.getElementById("funcionario-lol");
+   var compratotallol = document.getElementById("compratotal");
+  	  $.ajax({
+			method : "GET",
+			url : "edicao",
+			data : "idcompra=" + id ,
+			success : function(response) {
+						$("#compraid").val(response.id);
+						$("#nomepromocao").val(response.nome);
+						$("#dtini").val(response.dtini);
+						$("#dtfim").val(response.dtfim);
+						categoriacb.selectedIndex = response.posfun;
+						marcacb.selectedIndex = response.posfor;
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+	 
+		   $.ajax({
+				method : "GET",
+				url : "buscarListaItem",
+				data : "idcompra=" + id ,
+				success : function(response) {
+							
+							$('#tabelaItens > tbody > tr').remove();
+							for (var i = 0; i < response.length; i++){
+							$('#tabelaItens > tbody').append 
+							('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td>'+response[i].valor+'</td><td><button onmousemove="colocarEmEdicao('+response[i].idproduto+')" type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
+							}
+				
+				}
+	  
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro na busca de promocao por id: " + xhr.responseText);
+		});
+		
+  }
+  
+function minhafuncao()	
+{	
+	var selectElem2 = document.getElementById('funcionario-lol');
+	pos2 =selectElem2.selectedIndex;
+
+  $.ajax({
+				method : "GET",
+				url : "posfun",
+				data : "posfun=" + pos2 ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		
+			
+						  
+}
+	
+function criarButton(){
+	
+	var resultado = confirm("Voce deseja Excluir?");
+	
+		  $.ajax({
+				method : "GET",
+				url : "resultex",
+				data : "ex=" + resultado ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});
+	if(resultado)
+	{
+		alert("Promocao excluida!")	
+	}
+	else{
+	alert("Promocao nao excluida!")	
+	}
+}
+
+$( "button.excluir" ).click(function() {
+        $(this).parent().parent().remove();
+    });
+
+function filtro(){
+
+	  var datalol = $('#dtpesquisar').val();
+	
+	
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorPromocaoFiltro",
+				data : "datalol=" + datalol,
+				success : function(response) {
+					$('#tabelaresultados > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="habilitarnovo();minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  
+  
+}    
+
+ function colocarEmEdicaoNovidade(id) {  
+	  $.ajax({
+			method : "GET",
+			url : "buscarmarcaid",
+			data : "idmarca=" + id ,
+			success : function(response) {
+				$("#nomecat").val(response.nome);
+			
+				
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro ao buscar Categoria id: " + xhr.responseText);
+		});
+	  
+	  
+  	}
+ 
+     
+</script>
+</body>
+</html>

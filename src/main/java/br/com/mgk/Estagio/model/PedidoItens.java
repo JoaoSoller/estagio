@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-	@Entity
+@Entity(name = "pedido_itens")
 	@SequenceGenerator(name = "seq_pedidoitens", sequenceName = "seq_pedidoitens", allocationSize = 1, initialValue = 1)
 
 	public class PedidoItens {
@@ -23,6 +23,7 @@ import javax.persistence.SequenceGenerator;
 		private Pedido pedido;
 		private Integer quantidade = 0;
 		private Double valorUnitario=0.0;
+
 		private Double desconto=0.0;
 		private Double acrescimo=0.0;
 		private Double ValorTotal= 0.0;

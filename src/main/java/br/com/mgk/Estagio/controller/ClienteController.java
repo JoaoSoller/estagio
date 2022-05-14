@@ -43,16 +43,16 @@ public class ClienteController {
 	@PostMapping(value = "cliente/cadastro/salvar") /* mapeia a url */
 	@ResponseBody /* Descricao da resposta */
 	public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente) { /* Recebe os dados para salvar */
-	
+		if(cliente.getId()==0)
 			cliente.setSenha(new BCryptPasswordEncoder().encode(cliente.getSenha()));
-			Cliente user = clienteRepository.saveAndFlush(cliente);
-			return new ResponseEntity<Cliente>(user, HttpStatus.CREATED);
+		Cliente user = clienteRepository.saveAndFlush(cliente);
+		return new ResponseEntity<Cliente>(user, HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "cliente/cadastro/atualizar") /* mapeia a url */
 	@ResponseBody /* Descricao da resposta */
 	public ResponseEntity<?> atualizar(@RequestBody Cliente cliente) { /* Recebe os dados para salvar */
-		
+			if(!cliente.getSenha().isEmpty())
 			cliente.setSenha(new BCryptPasswordEncoder().encode(cliente.getSenha()));
 			Cliente user = clienteRepository.saveAndFlush(cliente);	
 			return new ResponseEntity<Cliente>(user, HttpStatus.OK);

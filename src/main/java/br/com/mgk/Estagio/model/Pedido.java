@@ -22,10 +22,38 @@ private static final long serialVersionUID = 1L;
 	private long id;
 	@ManyToOne
 	private Cliente cliente;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataCompra = new Date();
+	private String dataCompra;
 	private Double frete;
-	private Double valorTotal=0.;
+	private Double valorTotal=0.0;
+	private String numerocartao;
+	private String status;
+	private Double desconto = 0.0;
+	private Double valorFinal=0.0;
+	
+	public Double getValorFinal() {
+		return valorFinal;
+	}
+	public void setValorFinal(Double valorFinal) {
+		this.valorFinal = valorFinal;
+	}
+	public Double getDesconto() {
+		return desconto;
+	}
+	public void setDesconto(Double desconto) {
+		this.desconto = desconto;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getNumerocartao() {
+		return numerocartao;
+	}
+	public void setNumerocartao(String numerocartao) {
+		this.numerocartao = numerocartao;
+	}
 	public long getId() {
 		return id;
 	}
@@ -38,10 +66,10 @@ private static final long serialVersionUID = 1L;
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	public Date getDataCompra() {
+	public String getDataCompra() {
 		return dataCompra;
 	}
-	public void setDataCompra(Date dataCompra) {
+	public void setDataCompra(String dataCompra) {
 		this.dataCompra = dataCompra;
 	}
 	public Double getFrete() {

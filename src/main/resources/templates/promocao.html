@@ -23,10 +23,14 @@ html {
 
 <form action="salvar" id="formCadastroUser" th:object="${promocao}" method="post" enctype="multipart/form-data">
 <div class="form-row">
+<div class="mb-3">
+  <label for="nome" class="form-label">ID da Promocao</label>
+  <input type="text" class="form-control " th:field="*{id}" id="promocaoid"  readonly="readonly"><br>
+</div>
 	<div class="mb-3">
 	<label for="nomefunc" class="form-label btn">Funcionario</label>
-	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle" id="funcionario-lol">
-    <option value=""> Escolha o funcionario</option>
+	<select th:field="*{funcionario}" class="btn-secondary dropdown-toggle" onchange ="minhafuncao();habilitarnovo();habiltasalvar();" id="funcionario-lol" >
+    <option value="" > Escolha o funcionario</option>
     <option th:each="funcionariolol : ${listafuncionario}"
 		  					th:value="${funcionariolol.id}"
 		  				    th:text="${funcionariolol.nome}">
@@ -34,55 +38,50 @@ html {
 	  </select>
 	</div>
 	<div class="mb-3">
-		 <label for="nome" class="form-label">Nome da Promocao</label>
- 		 <input type="text" class="form-control " th:field="*{nome}" id="nomepromocao" required="required"><br>
+		 <label for="nome" >   Nome Promocao  </label>
+ 		 <input type="text" th:field="*{nome}" id="nomepromocao"  onchange="habiltasalvar();">
+	
+		 <label for="nome" >  Porcentagem % </label>
+ 		 <input type="number" th:field="*{porcentagem}" onchange="habiltasalvar();">
+	
+		 <label for="nome" class="form-label">Data Inicial</label>
+ 		 <input type="date" id="dtini" oninput="mascara(this,'data')" th:field="*{dtini}" onchange="habiltasalvar();">
+
+		 <label for="nome" class="form-label">Data Final</label>
+ 		 <input type="date" oninput="mascara(this,'data')" id="dtfim" th:field="*{dtfim}" onchange="habiltasalvar();">
+ 		
 	</div>
-	<div class="mb-3">
-		 <label for="nome" class="form-label">Data Inicial da Promocao</label>
- 		 <input type="text" class="form-control" id="dataini"   th:field="*{dtini}" ><br>
-	</div>
-	<div class="mb-3">
-		 <label for="nome" class="form-label">Data Final da Promocao</label>
- 		 <input type="text" oninput="mascara(this, 'data')" class="form-control "  id="datafim" th:field="*{dtfim}"><br>
-	</div>
-</div>
-<div class="form-row" th:object="${PromocaoItem}">
-<div class="mb-3">
-  <label for="nome" class="form-label">ID do Produto</label>
-  <input type="text" class="form-control " th:field="*{produto.id}" id="idproduto"  readonly="readonly" required="required"><br>
-</div>
+
 
 <div class="mb-3">
-  <label for="nome" class="form-label">Nome do Produto</label>
-  <input type="text" class="form-control" th:field="*{produto.nome}" id="nome"  readonly="readonly" required="required"><br>
-  <button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pesquisar</button>
-</div>
-
-<div class="mb-3">
-  <label for="valor" class="form-label">Valor Antigo</label>
-  <input type="number" class="form-control"  th:field="*{produto.preco}" id="idpreco" readonly="readonly">
-</div>
-
-<div class="mb-3">
-  <label for="quantidade" class="form-label">Valor Novo</label>
-  <input type="number" class="form-control" id="preconovo" th:field="*{preconovo}" placeholder="Informe o novo valor" required="required">
+  <label for="valor" class="form-label">Categoria</label>
+  <button  type="button"  class="btn btn-primary"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser"  onclick="habiltasalvar();habilitarexcluir();">Pesquisar</button>
+ <button  type="submit" id="Adiciona" name="acao" th:value="chatuba" class="btn btn-primary" onclick="validar();habilitarnovo();habilitarexcluir();habiltasalvar();" >Adicionar</button> 
+  <input type="text" id="nomecat" th:field="*{categoria}" readonly="readonly">
+  <button  type="submit"  name="acao" th:value="chatuba" class="btn btn-primary" onclick="validar();habilitarnovo();habilitarexcluir();habiltasalvar();" >Calcular</button>  
+   
 </div>
 </div>
 
 <div class="form-row" >
 	<div class="form-group col-md-6">
-	<table class="table">
+	<table class="table" id="tabelaItens" onchange="habilitarnovo();habilitarexcluir();">
 	  <thead>
 	    <tr>
-	      <th scope="col">Nome</th>
-          <th scope="col">Valor Venda</th>
+		  <th scope="col">Nome</th>
+          <th scope="col">Valor sem Desconto</th>
+          <th scope="col">Valor com Desconto</th>
+	      <th scope="col">Desconto</th>
 	      <th scope="col">Acao</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr  th:each="entradaslol : ${listaPromocaoItens}">
-	      <td th:text="${entradaslol.produto.nome}"></td>
-	      <td th:text="${entradaslol.preconovo}"></td>
+	    <tr  th:each="entradaslol : ${listaPromocaoItens}" onchange="habilitarnovo();">
+	  
+	 	   <td th:text="${entradaslol.produto.nome}"></td>
+	       <td th:text="${entradaslol.precoantigo}"></td>
+	        <td th:text="${entradaslol.preconovo}"></td>
+	         <td th:text="${entradaslol.desconto}"></td>
 	      <td> 
                       <button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs" onclick="validar();">Remover</button>
           </td>
@@ -94,10 +93,8 @@ html {
 	</div>
 </div>
 <div class="alert alert-danger" role="alert" th:text="${erro}"> </div>
-<button type="submit" class="btn btn-primary"  name="acao" th:value="salvar" onclick="limpar(); validar();">Salvar</button>
-<button type="submit" id="add" name="acao" th:value="itens" class="btn btn-primary" onclick="validar();" >ADD</button>
-
-
+<button disabled type="submit" class="btn btn-primary" id="salvar"  name="acao" th:value="salvar" onclick="limpar(); validar();">Salvar</button>
+<button type="submit" class="btn btn-primary" name="acao" id="novo" th:value="novo">Novo</button>
 
 
 
@@ -106,7 +103,7 @@ html {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Produto</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Categoria</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -140,7 +137,26 @@ html {
   </div>
 </div>
 
+<br>
+		
+<label for="nome" class="form-label">Filtro por Data                :</label>
+<input type="date"   id="dtpesquisar"  required="required">
+<button type="submit" class="btn btn-primary" onclick="filtro(); minhafuncao();">Pesquisar</button>
 
+
+<table class="table" id="tabelaresultadosCompra">
+		<thead>
+			<tr>
+				<th scope="col">Data</th>
+				<th scope="col">Nome</th>
+				<th scope="col">Editar</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+	
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
  <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -149,6 +165,39 @@ html {
 
 
 <script type="text/javascript">
+
+
+
+
+function habilitapsq(){
+
+}
+
+function habiltasalvar(){
+var selectElem2 = document.getElementById('funcionario-lol');
+pos2 =selectElem2.selectedIndex;
+var id = $("#promoid").val();
+var nome = $("#nomepromocao").val();
+var dataini =document.getElementById('dtini');
+var datafim = document.getElementById('dtfim');
+
+var porcentagem = $("#porcentagem").val();
+	if ( nome != '' && dataini.value != '' && datafim.value != '' && porcentagem !='0.0' && porcentagem !='' && pos2>0)
+	{
+		document.getElementById("salvar").disabled = false;
+	}
+	else
+	{
+		document.getElementById("salvar").disabled = true;
+	}
+}
+function habilitarexcluir(){
+document.getElementById("excluir").disabled = false;
+}
+
+function habilitarnovo(){
+document.getElementById("novo").disabled = false;
+}
 
 function limpar(){
 	$("#nome").va
@@ -160,7 +209,7 @@ function validar(){
 	var nome = $("#nomepromocao").val();
 	var dataini = $("#dataini").val();
 	var datafim = $("#datafim").val();
-	var preconovo = $("#preconovo").val();
+	
 	
 		if (nome == null || nome != null && nome.trim() == ''){
 			$("#nome").focus();
@@ -168,22 +217,8 @@ function validar(){
 			return;
 		}
 		
-		if (dataini == null){
-			$("#dataini").focus();
-			alert('Informe a data inicial');
-			return;
-		}
-		
-		if (datafim == null){
-			$("#datafim").focus();
-			alert('Informe a data final');
-			return;
-		}
-		if (preconovo == null){
-			$("#preconovo").focus();
-			alert('Informe o preco novo');
-			return;
-		}
+	
+	
 }
 function botaoDeletarDaTela(){
 	var id = $('#id').val();
@@ -257,9 +292,10 @@ function mascara(i,t)
    }
 }
 
+  
   function pesquisarUser(){
      
-  
+  	
 	  var nome = $('#nameBusca').val();
 	  if (nome != null && nome.trim() != ''){
 		  $.ajax({
@@ -271,7 +307,7 @@ function mascara(i,t)
 					
 					for (var i = 0; i < response.length; i++){
 						$('#tabelaresultados > tbody').append
-						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicao('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicao('+response[i].id+');habiltasalvar();colocarEmEdicaoNovidade('+response[i].id+');" class="btn btn-primary">Adicionar</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
 					}
 				  
 				}
@@ -280,22 +316,20 @@ function mascara(i,t)
 			});		  
 	  }
   }
-  
-  function colocarEmEdicao(id) {  
 
+  function colocarEmEdicao(id) {  
   	  $.ajax({
 			method : "GET",
 			url : "/buscarprodutoidtudo",
 			data : "idproduto=" + id ,
 			success : function(response) {
-
-				$("#nome").val(response.nome);
-				$("#idproduto").val(response.id);
-				$("#idpreco").val(response.preco);
+			Location.reload()
+				
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao produto por id: " + xhr.responseText);
 		});
+		
 	  
 	  
   }
@@ -327,7 +361,7 @@ function minhafuncao()
 					
 					for (var i = 0; i < response.length; i++){
 						$('#tabelaresultadosCompra > tbody').append
-						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="habiltasalvar();colocarEmEdicaoCompra('+response[i].id+');colocarCategoria('+response[i].nome+');" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
 					}
 				  
 				}
@@ -345,8 +379,11 @@ function minhafuncao()
 			url : "edicao",
 			data : "idcompra=" + id ,
 			success : function(response) {
-						$("#compraid").val(response.id);
-						$("#compratotal").val(response.total);
+						$("#promocaoid").val(response.id);
+						$("#nomepromocao").val(response.nome);
+						$("#dtini").val(response.dtini);
+						$("#dtfim").val(response.dtfim);
+							$("#porcentagem").val(response.porcentagem);
 						funcionariocb.selectedIndex = response.posfun;
 
 			}
@@ -363,7 +400,7 @@ function minhafuncao()
 							$('#tabelaItens > tbody > tr').remove();
 							for (var i = 0; i < response.length; i++){
 							$('#tabelaItens > tbody').append
-							('<tr id="'+response[i].id+'"><td>'+response[i].nome+'</td><td>'+response[i].quantidade+'</td><td>'+response[i].valor+'</td><td>'+response[i].valoritem+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
+							('<tr id="'+response[i].id+'"><td>'+response[i].produto.nome+'</td><td>'+response[i].precoantigo+'</td><td>'+response[i].preconovo+'</td><td>'+response[i].desconto+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
 							}
 				
 				}
@@ -374,6 +411,155 @@ function minhafuncao()
 		
   }
   
+	function pesquisarPromocao(){
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorPromocao",
+				data : " ",
+				success : function(response) {
+					$('#tabelaresultadosCompra > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser('+response[i].id+')">Delete</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  
+  }
+  
+
+  function colocarEmEdicaoPromocao(id) { 
+   this.id = id;
+   var marcacb = document.getElementById("fornecedor-lol");
+   var categoriacb = document.getElementById("funcionario-lol");
+   var compratotallol = document.getElementById("compratotal");
+  	  $.ajax({
+			method : "GET",
+			url : "edicao",
+			data : "idcompra=" + id ,
+			success : function(response) {
+						$("#compraid").val(response.id);
+						$("#nomepromocao").val(response.nome);
+						$("#dtini").val(response.dtini);
+						$("#dtfim").val(response.dtfim);
+						categoriacb.selectedIndex = response.posfun;
+						marcacb.selectedIndex = response.posfor;
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro a busca de compra por id: " + xhr.responseText);
+		});
+	 
+		   $.ajax({
+				method : "GET",
+				url : "buscarListaItem",
+				data : "idcompra=" + id ,
+				success : function(response) {
+							
+							$('#tabelaItens > tbody > tr').remove();
+							for (var i = 0; i < response.length; i++){
+							$('#tabelaItens > tbody').append 
+							('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td>'+response[i].valor+'</td><td><button onmousemove="colocarEmEdicao('+response[i].idproduto+')" type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
+							}
+				
+				}
+	  
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro na busca de promocao por id: " + xhr.responseText);
+		});
+		
+  }
+  
+function minhafuncao()	
+{	
+	var selectElem2 = document.getElementById('funcionario-lol');
+	pos2 =selectElem2.selectedIndex;
+
+  $.ajax({
+				method : "GET",
+				url : "posfun",
+				data : "posfun=" + pos2 ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		
+			
+						  
+}
+	
+function criarButton(){
+	
+	var resultado = confirm("Voce deseja Excluir?");
+	
+		  $.ajax({
+				method : "GET",
+				url : "resultex",
+				data : "ex=" + resultado ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});
+	if(resultado)
+	{
+		alert("Promocao excluida!")	
+	}
+	else{
+	alert("Promocao nao excluida!")	
+	}
+}
+
+$( "button.excluir" ).click(function() {
+        $(this).parent().parent().remove();
+    });
+
+function filtro(){
+
+	  var datalol = $('#dtpesquisar').val();
+	
+	
+	  $.ajax({
+				method : "GET",
+				url : "buscarPorPromocaoFiltro",
+				data : "datalol=" + datalol,
+				success : function(response) {
+					$('#tabelaresultadosCompra > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultadosCompra > tbody').append
+						('<tr id="'+response[i].id+'"><td>'+response[i].dtini+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="habilitarnovo();minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});		  
+	  
+  
+} 
+
+ function colocarEmEdicaoNovidade(id) {  
+	  $.ajax({
+			method : "GET",
+			url : "buscarmarcaid",
+			data : "idmarca=" + id ,
+			success : function(response) {
+				$("#nomecat").val(response.nome);
+			
+				
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro ao buscar Categoria id: " + xhr.responseText);
+		});
+	  
+	  
+  	}
+ 
+     
 	
 </script>
 </body>

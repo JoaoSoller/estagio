@@ -1,0 +1,994 @@
+    *{
+        margin:0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Heebo', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        
+    }
+
+
+    /*---------------------------- HEADER -------------------------*/
+
+    /*--------- GAMEBAR1 -------*/
+
+    .li-gameBar{
+        width: 100%;
+        display: flex;
+        height: 53px;
+        border-bottom: 1px solid #E7E7E7;
+        background-color: #F8F8F8;
+    }
+
+    .li-gameBar1{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        height: 53px;
+        border-right: 1px solid #E7E7E7;
+    }
+
+    .li-gameBar-imagem{
+        width: 21.24px;  
+        height: 24px;   
+        margin-right: 14.51px;
+        margin-left: 14.51px;
+    }
+
+    .li-gameBar1-texto{    
+        font-family: 'Heebo', sans-serif;
+        font-size: 19px;  
+    }
+
+    .li-gameBar2{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 49%;
+        height: 53px;
+    }
+
+    .li-gameBar2-texto{    
+        font-family: 'Heebo', sans-serif;
+        font-size: 19px;  
+    }
+
+    /*--------- BARRA2 -------*/
+
+    .li-barra2{
+        width: 100%;
+        height: 82px;
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .li-lojas{
+        display: flex;
+        float: left;
+        height: 82px;
+    }
+
+    .li-lojas-imagem{
+        height: 22px;
+        width: 19px;
+        background-image: url(../images/localizacao.svg);
+        margin-right: 18px;
+        margin-top: 30px;
+    }
+
+    .li-barra2-texto{
+        font-family: 'Heebo', sans-serif;
+        text-decoration: none;
+        font-size: 19px;
+        color: #43444A;
+        font-weight: 400;
+        margin-top: 29px;
+        letter-spacing: 0.4px;
+    }
+
+    .li-atendimento{
+        display: flex;
+        float: left;
+        height: 82px;
+    }
+
+    .li-atendimento-imagem{
+        height: 22px;
+        width: 22px;
+        background-image: url(../images/telefone.svg);
+        margin-left: 58px;
+        margin-top: 30px;
+        margin-right: 21px;
+    }
+
+    .li-desconto{
+        width: 388px;
+        height: 36px;
+        display: flex;
+        background-color: #FFEEE5;
+        border-radius: 3px;
+        margin-top: 22px;
+        margin-left: 186px;
+        margin-right: 31px;
+    }
+
+    .li-desconto-imagem{
+        height: 16.01px;
+        width: 16.01px;
+        background-image: url(../images/porcentagem_colorida.svg);
+        margin-left: 23.99px;
+        margin-top: 10px;
+        margin-right: 16px;
+    }
+
+    .li-desconto-texto{
+        font-family: 'Heebo', sans-serif;
+        font-size: 19px;
+        color: #BE8E74;
+        font-weight: 400;
+        margin-top: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    .li-negrito{
+        font-weight: bold;
+        color: #FF5100;
+    }
+
+    .li-barra2-divisao{
+        margin-top: 20px;
+        height: 42px;
+        width: 1px;
+        background-color: #E7E7E7;
+    }
+
+    .li-perfil{
+        width: 22px;
+        height: 22px;
+        background-image: url(../images/logout-20.png);
+        margin-right: 31px;
+        margin-top: 31px;
+        margin-left: 31px;
+    }
+   .li-perfil2{
+        width: 22px;
+        height: 22px;
+        background-image: url(../images/perfil.svg);
+        margin-right: 31px;
+        margin-top: 31px;
+        margin-left: 31px;
+    }
+
+    .li-barra2-sacola{
+        width: 41px;
+        height: 33px;
+        display: block;
+        position: relative;
+        display: block;
+        margin-left: 26px;
+        margin-top: 30px;
+    }
+
+    .li-sacola{
+        width: 18px;
+        height: 22px;
+        background-image: url(../images/sacola.svg);
+        margin: 1px 20px 10px 3px;
+    }
+
+    .li-notificacao-sacola{
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #FF5100;
+        z-index: 200;
+        position: absolute;
+        text-align: center;
+        right: 0;
+        bottom: 0;
+    }
+
+    .li-notificacao-numero{
+        font-family: 'Heebo', sans-serif;
+        font-weight: 700;
+        color: #FFF;
+        font-size: 17px;
+    }
+
+    /*--------- BARRA3 -------*/
+
+    .li-barra3{
+        width: 100%;
+        height: 106px;
+        display: flex;
+        justify-content: center;
+        background-color: #FFF;
+        
+    }
+
+    .li-logo{
+        height: 40px;
+        width: 144.4px;
+        float: left;
+        background-image: url(../images/Logoipsum.svg);
+        cursor: pointer;
+        margin-top: 32px;
+    }
+
+    .li-scooby{
+        width: 147px;
+        height: 37px;
+        margin-top: 37px;
+        background-color: #38C9AC1A;
+        float: left;
+        display: block;
+        border-radius: 99px;
+        text-align: center;
+        margin-right: 141.5px;
+        margin-left: 30.6px;
+    }
+    
+    .li-scooby-texto{
+        color: #38C9AC;
+        font-family: 'Heebo', sans-serif;
+        font-weight: 700;
+        margin: 7px 18px;
+    }
+
+    .li-menu{
+        display: table;
+        float: left;
+        height: 106px;
+    }
+
+    .li-menu a{
+        font-family: 'Heebo', sans-serif;
+        font-size: 19px;
+        color: #43444A;
+        text-decoration: none;
+        display: inline-block;
+        height: 106px;
+        margin-left: 45px;
+        padding-top: 41px;
+        font-weight: 400;
+        position: relative;
+        
+    }
+
+    .li-menu a:before{
+        content: '';
+        width: 0;
+        height: 3px;
+        background-color: #FF5100;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: all 0.3s ease-out;
+    }
+
+    .li-menu a:hover:before{
+        width: 100%;
+    }
+
+
+    .li-menu a:first-child{
+        margin-left: 0;
+    }
+
+    .li-menu a:last-child{
+        padding-right: 0;
+    }
+
+    .li-busca{
+        width: 22px;
+        height: 22px;
+        
+        float: left;
+        background-image: url(../images/search.svg);
+        margin-left: 180.5px;
+        margin-top: 42px;
+        cursor: pointer;       
+    }
+
+    .li-bar-menu{
+        display: none;
+        width: 32px;
+        height: 32px;
+        float: left;
+        background-image: url(../images/bar-menu.png);
+        margin-left: 10%;
+        margin-right: 2%;
+        margin-top: 40px;
+        cursor: pointer;       
+    }
+
+    /*--------- MENU SELECIONADO -------*/
+
+    .li-opcao-menu{
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 242px;
+        z-index: 200;
+        background-color:#FFFFFF;
+        box-shadow: 0px 16px 18px rgba(20, 21, 24, 0.14);
+    }
+
+    
+    .li-opcao-menu-lista{
+        display: flex;
+        padding-left: 15%;
+    }
+
+    .li-menu-lista{
+        padding-left: 10%;
+        border-bottom: 1px solid #E7E7E7;
+    }
+
+    .li-menu-lista:first-child{
+        padding-left: 0;
+    }
+
+    .li-lista-menu{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .li-lista-menu-click{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .li-lista-menu a{
+        text-decoration: none;
+        color: #43444A;
+        font-size: 19px;
+        line-height: 23px;
+        font-weight: 500;
+        padding-bottom: 30px;
+    }
+
+    .li-lista-menu-click a{
+        text-decoration: none;
+        color: #43444A;
+        font-size: 17px;
+        line-height: 22px;
+        font-weight: normal;
+        padding-bottom: 30px;
+        letter-spacing: 0.03em;
+    }
+
+    .itens-conjunto{
+        padding-left: 10%;
+    }
+
+    .itens-conjunto:first-child{
+        padding-left: 0;
+    }
+
+
+    .li-conjunto{
+        padding-left: 15%;
+        padding-top: 57px;
+        color: #43444A;
+        font-size: 19px;
+        line-height: 23px;
+        font-weight: 500;
+        
+    }
+
+    .li-conjunto-grupo{
+        display: flex;
+        padding-left: 15%;
+        padding-top: 30px;
+    }
+
+    .li-opcao-menu-img{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 394px;
+        height: 501px;
+        margin-top: 45px;
+        background-color: #F8F8F8;
+        border-radius: 3px;
+        margin-bottom: 151px;
+    }
+
+    .li-menu-textos{
+        width: 50%;
+        margin: 45px 0 0 15%; 
+    }
+
+    .li-opcao-flex{
+        display: flex;
+        flex-basis: 50%;
+        width: 100%;
+    }
+
+
+
+    /*--------- INDICAÇÃO -------*/
+
+    .li-indicacao{
+        width: 100%;
+        
+        display: flex;
+        justify-content: center;
+        background-color: #141518;
+        
+    }
+
+    .li-indicacao-texto{
+        font-family: 'Heebo', sans-serif;
+        margin: 12px;
+        font-size: 17px;
+        color:#A4A4A4;
+    }
+
+    .li-indicacao-negrito{
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .li-indicacao-texto a{
+    
+        font-weight: 700;
+        color: #fff;
+    }
+
+    /*---------------------------- BANNER -------------------------*/
+
+    .li-banner{
+        width: 100%;
+        height: 664px;
+    }
+
+    .li-banner-imagem{
+        width: 100%;
+        position: relative;
+        height: 664px;
+        background-image: url(../images/logo1.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0 auto;
+    }
+
+    .li-banner-bloco{
+        position: absolute;
+        top: 33%;
+        left: 16%;
+        width: 80%;
+        
+    }
+
+    .li-banner-titulo{
+        font-family: 'Heebo', sans-serif;
+        width: 14px;
+        height: 17px;
+        margin-bottom: 24px;
+        font-size: 19px;
+        color: #FFF;
+        font-weight: 400;
+    }
+
+    .li-banner-subtitulo{
+        
+        font-size: 50px;
+        color: #FFF;
+        font-weight: 500;
+    }
+
+    .li-botao-branco{
+
+        align-items: center;
+        width: 231px;
+        height: 55px;
+        margin-top: 76px;
+        margin-right: 30px;
+        margin-bottom: 30px;
+        border: none;
+        text-transform: uppercase;
+        background-color: #FFF;
+        border-radius: 5px;
+        padding: 20px 30px 20px 30px;
+        font-weight: 500;
+        font-size: 16px;
+        color: #242529;
+        line-height: 17px;
+        cursor: pointer;
+    }
+
+    .li-botao-transparente{
+
+        width: 177px;
+        height: 55px;
+        text-transform: uppercase;
+        background-color: transparent;
+        text-transform: uppercase;
+        padding: 20px 30px 20px 30px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-sizing: border-box;
+        border-radius: 3px;
+        color: #FFF;
+        line-height: 17px;
+        font-size: 16px;
+        font-weight: 500px;
+        cursor: pointer;
+        
+    }
+
+    /*---------------------------- CATEGORIA PERSONALIZADA -------------------------*/
+
+    .li-categoria-personalizada{
+        display: grid;
+        width: 1922px;
+        height: 680px;
+        margin: 0 auto;
+        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-rows: 325px 325px;
+        grid-gap: 30px;
+        padding: 30px 30px;
+        margin-bottom: 60px;
+    }
+
+    .li-categoria-peitoral{
+        background-color: #F8F8F8;
+        height: 680px;
+        grid-column: 1/2;
+        grid-row: 1/3;
+    }
+
+    .li-categoria-roupinhas{
+        background-color: #F8F8F8;
+        height: 325px;
+        grid-column: 2/4;
+        grid-row: 1/2;
+        display: flex;
+    }
+
+    .li-categoria-coleiras{
+        background-color: #F8F8F8;
+        height: 325px;
+        grid-column: 2/3;
+        grid-row: 2/3;
+    }
+
+    .li-categoria-guia{
+        background-color: #F8F8F8;
+        height: 325px;
+        grid-column: 3/4;
+        grid-row: 2/3;
+    }
+
+    .li-categoria-texto{
+        color: #43444A;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 17px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .li-img-peitoral{
+        width: 512px;
+        height: 512px;
+        background-image: url(../images/motor-512.png);
+        background-repeat: no-repeat;
+        margin: 67px auto 18px auto;
+    }
+
+    .li-img-roupinhas{
+        width: 255px;
+        height: 255px;
+        background-image: url(../images/whel128.png);
+        margin: 50px 19% 50px 15%;
+         background-repeat: repeat;
+        }
+
+    .li-roupinhas-texto{
+        vertical-align: middle;
+        margin-top: 162px;
+    
+    }
+
+    .li-img-coleiras{
+        width: 190px;
+        height: 77px;
+        background-image: url(../images/bateria-64.png);
+        margin: 89px auto 86px auto;
+    }
+
+    .li-img-guias{
+        width: 190px;
+        height: 130px;
+        background-image: url(../images/amortecedor-64.png);
+        margin: 48px auto 61px auto;
+    }
+
+    /*---------------------------- FOOTER -------------------------*/
+
+    /*--------- SOBRE -------*/
+
+    .li-footer-grupo1{
+        width: 100%;
+        position: relative;
+        background-color: #F8F8F8;
+        margin: 0 auto ;
+        padding-bottom: 132px;
+    }
+
+    .li-fotter-opcoes{
+        display: flex;
+        padding-right: 15%;
+        padding-left: 15%;
+    }
+
+    .li-box{
+        flex-basis: 50%;   
+    }
+
+    .li-box h2{ 
+       font-weight: 500;
+       font-size: 23px;
+       line-height: 28px;
+       color: #43444A; 
+       margin-bottom: 30px;
+       margin-top: 103px;
+       font-weight: 500;
+    }
+
+    .li-lista{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .li-lista a{
+        text-decoration: none;
+        color: #43444A;
+        font-size: 17px;
+        line-height: 22px;
+        letter-spacing: 0.03em;
+        font-weight: 400;
+        padding-bottom: 30px;
+    }
+
+    .li-grupo1-siga{
+        flex-direction: row;
+    }
+
+    .li-grupo1-siga a{
+        margin-right: 30px;
+    }
+
+    .li-instagram{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        height: 55px;
+        border: 1px solid rgba(164, 164, 164, 0.4);
+        box-sizing: border-box;
+        border-radius: 3px;
+    }
+
+    .li-instagram img{
+        width: 20px;
+        height: 20px;
+    }
+
+    .li-facebook{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        height: 55px;
+        border: 1px solid rgba(164, 164, 164, 0.4);
+        box-sizing: border-box;
+        border-radius: 3px;
+    }
+
+    .li-social{
+        display: flex;
+    }
+
+    .li-pagamento{
+        display: grid;
+        grid-template-columns: 70px 70px 70px;
+        grid-gap: 30px;
+
+    }
+
+    .li-box-pagamento{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        height: 55px;
+        background: #FFFFFF;
+        border-radius: 3px;
+    }
+
+    .li-box-pagamento img{
+        width: 55px;
+        height: 34px;
+    }
+
+    /*--------- GRUPO2 -------*/
+
+    .li-footer-grupo2{
+        width: 100%;
+        position: relative;
+        background-color: #F2F2F2;
+        
+    }
+
+    .li-grupo2-main{
+        display: flex;
+        padding-left: 15%;
+        padding-right: 15%;
+        padding-top: 83px;
+    }
+
+    .li-logo-grupo2{
+        height: 40px;
+        width: 144.4px;
+        background-image: url(../images/Logoipsum.svg);
+        cursor: pointer;
+    }
+
+
+    .li-grupo2-texto{
+        margin-left: 4%;
+        width: 70%;
+    }
+
+    .li-grupo2-texto p{
+        line-height: 22px;
+        font-size: 17px;
+        align-items: center;
+        letter-spacing: 0.03em;
+        color: #43444A;
+    }
+
+    .li-grupo2-texto p:first-child{
+        margin-bottom: 30px;
+    }
+
+    .li-grupo2-texto p:last-child{
+        margin-top: 63px;
+        margin-bottom: 127px;
+    }
+
+    /*--------- COPYRIGHT -------*/
+
+    .li-copyright{
+            width: 100%;
+            height: 68px;
+            display: flex;
+            margin: 0 auto;
+            justify-content: center;
+            background-color: #141518;
+    }
+
+    .li-copyright-texto{
+        font-weight: 400;
+        font-size: 19px;
+        line-height: 23px;
+        letter-spacing: 0.03em;
+        color: #F7F9FA;
+        margin-top: 23px;
+    }
+
+    .li-copyright-negrito{
+        font-weight: 700;
+        font-size: 19px;
+        line-height: 23px;
+        color: #F7F9FA;
+        letter-spacing: 0.03em;
+    }
+
+    /*------------------ CLASSES UTILITARIAS -------------------*/
+
+    .li-separacao{
+        width: 100%;
+        border: 1px solid #E7E7E7;
+        height: 0px;
+    }
+
+    /*------------------ CLASSES COMPORTAMENTO -------------------*/
+
+    .li-visibilidade{
+        display: block;
+    }
+
+    /*------------------ RESPONSIVIDADE -------------------*/   
+
+    @media screen and (max-width:700px){ 
+        .li-lojas{
+            display: none;
+        }
+
+        .li-atendimento{
+            display: none;
+        }
+
+        .li-copyright-texto{
+            font-size: 12px;
+        }
+
+        .li-copyright-negrito{
+            font-size: 12px;
+        }
+    
+    }
+
+    @media screen and (max-width:768px){
+        .li-grupo2-main{
+            flex-wrap: wrap;
+            flex-direction: column; 
+        
+        }
+    
+        .li-grupo2-texto{
+            margin-top: 60px;
+            
+        }
+
+        .li-gameBar1-texto{
+            font-size: 12px;
+        }
+
+        .li-gameBar2-texto{
+            font-size: 12px;
+        }
+
+        .li-gameBar-imagem{
+            width: 15px;  
+            height: 24px;   
+            margin-right: 14.51px;
+            margin-left: 14.51px;
+        }
+    
+        .li-bar-menu{
+            display: flex;
+        }
+
+        .li-menu{
+            display: none;
+        }
+    
+    }
+
+    @media screen and (max-width:900px){
+        .li-menu a{
+            font-size: 15px;
+        }
+    }
+
+    @media screen and (max-width:1250px){
+        .li-desconto{
+            display: none;
+        }
+
+        .li-atendimento{
+            margin-right: 30px;
+        }
+
+        .li-scooby{
+            display: none;
+        }
+
+        .li-logo{
+            margin-right: 5%;
+        }
+
+        .li-busca{
+            margin-left: 5%;
+        }
+
+
+    }
+
+    @media screen and (max-width:1400px){
+
+        .li-fotter-opcoes{
+            width: 100%;
+            flex-wrap: wrap;
+            flex-direction: column; 
+        }
+
+        .li-categoria-personalizada{
+            
+            display: inline;
+            grid-template-columns: none;
+            grid-template-rows: none;
+            grid-gap: none;
+            
+        }
+
+        .li-categoria-peitoral{   
+            display: flex;
+            flex-direction: column ; 
+            grid-column: none;
+            grid-row: none;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            height: 400px;
+        }
+
+        .li-categoria-roupinhas{
+            
+            display: flex;
+            height: 400px;
+            flex-direction: column ; 
+
+            grid-column: none;
+            grid-row: none;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .li-categoria-guia{
+            height: 325px;
+            display: flex;
+            flex-direction: column ; 
+            grid-column: none;
+            grid-row: none;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .li-categoria-coleiras{
+            
+            display: flex;
+            flex-direction: column ; 
+            grid-column: none;
+            grid-row: none;
+            margin-left: 20px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+
+        }
+    
+        .li-img-peitoral{
+            width: 227px;
+            height: 181px;
+            background-image: url(../images/peitoral_227.png);
+            margin: 67px auto 74px auto;
+        }
+
+        .li-img-roupinhas{
+            width: 182px;
+            height: 210px;
+            background-image: url(../images/Roupinha_182.png);
+            margin: 65px auto 49px auto;
+        }
+
+        .li-roupinhas-texto{
+            margin-top: 0px;
+        }
+
+        .li-fotter-opcoes{
+            display: flex;
+            align-items: center;
+        }
+    
+
+    }
+
+    @media screen and (max-width:1992px){
+        .li-categoria-personalizada{
+            width: 100%;
+        }
+
+
+    }

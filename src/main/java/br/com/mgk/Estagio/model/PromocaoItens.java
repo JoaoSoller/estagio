@@ -21,7 +21,14 @@ public class PromocaoItens {
 	private Promocao promocao;
 	private double precoantigo;
 	private double preconovo;
+	private double desconto;
 	
+	public double getDesconto() {
+		return desconto;
+	}
+	public void setDesconto(double desconto) {
+		this.desconto = desconto;
+	}
 	public long getId() {
 		return id;
 	}

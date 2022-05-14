@@ -1,5 +1,6 @@
 package br.com.mgk.Estagio.Repository;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,5 @@ public interface CompraItensRepository extends JpaRepository<CompraItens, Long>{
 	
 	@Query(value = "select u from compra_itens u where u.compra.id=:id")
 	List<CompraItens>buscarPorCompra(long id);	
+	
 }

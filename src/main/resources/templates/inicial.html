@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="ISO-8859-1">
-
+  <meta charset="UTF-8">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
@@ -29,6 +28,10 @@ html {
 					<div class="col-lg-4 col-md-6 mb-4"
 						th:each="produto : ${listaProdutos}">
 						<div class="card h-100">
+							<div class="card-body">
+							<a href="#"><img class="img-fluid"
+								th:src="${produto.nomeImagem}" /></a>
+							<div class="card-body">
 							
 							<div class="card-body">
 								<h4 class="card-title">
@@ -43,23 +46,123 @@ html {
 						 		<div class="card-footer">
 									<a class="btn btn-primary btn-lg btn-block" th:href="@{/adicionarCarrinho/{id}(id=${produto.id})}" role="button">Comprar</a>
 								</div>
+							</div>
+						</div>
 					</div>
-
-
-
-				</div>
+					
+		</div>
 				<!-- /.row -->
 
-			</div>
+	
 			<!-- /.col-lg-9 -->
 
-		</div>
 		<!-- /.row -->
 
 	</div>
 	<!-- /.container -->
 
 
+	</div>
+	</div>
+  <footer>
+
+        <div class="li-footer-grupo1">
+            <div class="li-fotter-opcoes">
+                <div class="li-grupo1-sobre li-box">
+                    <h2>Sobre</h2>
+                    <ul>
+                        <li class="li-lista">
+                            <a href="">A MGK</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="li-grupo1-ajuda li-box">
+                    <h2>Fale conosco</h2>
+
+                    <ul>
+                        <li class="li-lista">
+                            <a href="">+55 18 98149-5558</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="li-grupo1-siga li-box">
+                    <h2>Siga a Logoipsum</h2>
+                    <div class="li-social">
+                        <a href="https://www.instagram.com/mgkdiesel/">
+                            <div class="li-instagram">
+                            <img src="images/Instagram.png" alt="">
+                            </div>
+                        </a>
+                        <a href="https://www.facebook.com/MGK-diesel-102493321477950/">
+                            <div class="li-facebook">
+                            <img src="images/facebook.png" alt="">
+                        </div>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="li-grupo1-pagamento li-box">
+                    <h2>Pagamento</h2>
+                    <div class="li-pagamento">
+                        <div class="li-box-pagamento">
+                            <img src="images/visa@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/mastercard@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/amex@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/boleto@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/elo@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/diners@2x (1) 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/hiper@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/hipercard@2x 1.png" alt="">
+                        </div>
+                        <div class="li-box-pagamento">
+                            <img src="images/moip@2x 1.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="li-footer-grupo2">
+            <div class="li-grupo2-main">
+             
+                <div class="li-grupo2-texto">
+                    <p>Peças e Acessórios com qualidade, garantia, nota e bom preço. Além de um bom atendimento para atender a necessidade do cliente.
+                    </p>
+                    <p>A melhor autopeça da região, com mais de 30 anos no mercado, atendendo todas as marcas e modelos</p>
+                    <p>RH@mgkdiesel.com.br • Avenida Marginal, 490 - Parque Nico More, Pres. Venceslau - SP, 19400-000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="li-copyright">
+            <div class="li-copyright-texto">Copyright <span class="li-copyright-negrito">MGK DIESEL AutoPeças</span> -  2020. Todos os direitos reservados</div>
+        </div>
+
+
+
+
+
+
+
+
+</footer>
 
 </body>
 

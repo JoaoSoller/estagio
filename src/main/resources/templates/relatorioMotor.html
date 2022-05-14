@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Relatorio Motor</title>
+</head>
+<body>
+<body>
+
+	<!-- Page Content -->
+	<div class="container" layout:fragment="corpo">
+
+		<div class="row">
+
+			<!-- /.col-lg-3 -->
+
+				<div class="row">
+
+					<div class="col-lg-4 col-md-6 mb-4"
+						th:each="produto : ${listaProdutos}">
+						<div class="card h-100">
+							<div class="card-body">
+							<a href="#"><img class="img-fluid"
+								th:src="${produto.nomeImagem}" /></a>
+							<div class="card-body">
+							
+							<div class="card-body">
+								<h4 class="card-title">
+									<a href="#"><span th:text="${produto.nome}"></span></a>
+								</h4>
+								<h4 class="card-title">
+									<a href="#"><span th:text="${produto.descricao}"></span></a>
+								</h4>
+								<h5>
+									<span th:text="${produto.preco}"></span>
+								</h5>
+						 		<div class="card-footer">
+									<a class="btn btn-primary btn-lg btn-block" th:href="@{/adicionarCarrinho/{id}(id=${produto.id})}" role="button">Comprar</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+		</div>
+				<!-- /.row -->
+
+	
+			<!-- /.col-lg-9 -->
+
+		<!-- /.row -->
+
+	</div>
+	<!-- /.container -->
+
+
+	</div>
+	</div>
+
+</body>
+
+</body>
+</html>

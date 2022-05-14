@@ -28,11 +28,10 @@ html {
 	  <label for="id" class="form-label">ID</label>
 	  <input type="text" class="form-control" id="id" readonly="readonly">
 	</div>
-		<div class="mb-3">
+	<div class="mb-3">
 	  <label for="nome" class="form-label">Nome do Produto</label>
 	  <input type="text" class="form-control" id="nome" placeholder="Informe o nome"  required="required">
 	</div>
-	
 	<div class="mb-3">
 	  <label for="nome" class="form-label">Preco</label>
 	  <input type="number" class="form-control" id="preco"placeholder="Informe o preco" required="required">
@@ -41,7 +40,31 @@ html {
 	  <label for="nome" class="form-label">Descricao</label>
 	  <input type="text" class="form-control" id="descricao"  placeholder="Informe a descricao" required="required">
 	</div>
-
+	<div class="mb-3">
+	  <label for="nome" class="form-label">Peso</label>
+	  <input type="text" id="peso"  placeholder="Informe o peso" required="required">
+	</div>
+	<div class="mb-3">
+	  <label for="nome" class="form-label">Formato</label>
+	  <input type="text" id="codFormato"  placeholder="Informe o formato" required="required">
+	</div>
+	<div class="mb-3">
+	  <label for="nome" class="form-label">Comprimento</label>
+	  <input type="text" id="comprimento"  placeholder="Informe o comprimento" required="required">
+	</div>
+	<div class="mb-3">
+	  <label for="nome" class="form-label">Altura</label>
+	  <input type="text" id="altura"  placeholder="Informe a altura" required="required">
+	</div>
+	<div class="mb-3">
+	  <label for="nome" class="form-label">Largura</label>
+	  <input type="text" id="largura"  placeholder="Informe a largura" required="required">
+	</div>
+	<div class="mb-3">
+	  <label for="nome" class="form-label">Diametro</label>
+	  <input type="text" id="diametro"  placeholder="Informe a diametro" required="required">
+	</div>
+	
 	<div class="mb-3">
      <label for="nome" class="form-label">Categoria</label>
 	  <select th:field="${categoria}" class="form-control selectpicker" id="categoriacb">
@@ -61,6 +84,10 @@ html {
 		  				    th:text="${marcalol.nome}">
 		  </option>		
 	  </select>
+	</div>
+	<div class="mb-3">
+	  <label for="nome" class="form-label">Link da Foto</label>
+	  <input type="text" class="form-control" id="fotolink"  placeholder="Informe o link da foto" required="required">
 	</div>
 <br>
 <br>
@@ -195,7 +222,13 @@ function deleteUser(id){
 				$("#nome").val(response.nome);
 				$("#preco").val(response.preco);
 				$("#descricao").val(response.descricao);
-				
+				$("#fotolink").val(response.nomeImagem);
+			    $("#peso").val(response.peso);
+				$("#codFormato").val(response.codFormato);
+				$("#comprimento").val(response.comprimento);
+				$("#altura").val(response.altura);
+				$("#largura").val(response.largura);
+				$("#diametro").val(response.diametro);
 				categoriacb.selectedIndex = response.poscategoria;
 				marcacb.selectedIndex = response.posmarca;
 				 while (comboCidades.length) 
@@ -215,6 +248,13 @@ function deleteUser(id){
 		var nome = $("#nome").val();
 		var preco = $("#preco").val();
 		var descricao = $("#descricao").val();
+		var nomeImagem = $("#fotolink").val();
+		var peso = $("#peso").val();
+		var codFormato = $("#codFormato").val();
+		var comprimento = $("#comprimento").val();
+		var altura = $("#altura").val();
+		var largura = $("#largura").val();
+		var diametro = $("#diametro").val();
 		var marca = $("#marcacb").val();
 		var categoria = $("#categoriacb").val();
 		var selectElem = document.getElementById('marcacb')
@@ -246,7 +286,14 @@ function deleteUser(id){
 				marca : marca,
 				categoria : categoria,
 				posmarca : pos1,
-				poscategoria : pos2
+				peso : peso,
+				codFormato : codFormato,
+				comprimento : comprimento,
+				altura : altura,
+				largura : largura,
+				diametro : diametro,
+				poscategoria : pos2,
+				nomeImagem : nomeImagem
 			}),
 			contentType : "application/json; charset=utf-8",
 			success : function(response)

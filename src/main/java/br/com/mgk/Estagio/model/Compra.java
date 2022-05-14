@@ -21,8 +21,7 @@ public class Compra {
 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_compra")
 	private long id;
-	@Temporal(TemporalType.DATE)
-	private Date data;
+	private String data;
 	private Double total = 0.0;
 	@ManyToOne
 	private Funcionario funcionario;
@@ -50,10 +49,10 @@ public class Compra {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 	public Double getTotal() {

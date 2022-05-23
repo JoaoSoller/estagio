@@ -1,7 +1,12 @@
 package br.com.mgk.Estagio.controller;
 
+
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+
+
 	import org.springframework.http.HttpStatus;
 	import org.springframework.http.ResponseEntity;
 	import org.springframework.stereotype.Controller;
@@ -9,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.web.bind.annotation.CrossOrigin;
 	import org.springframework.web.bind.annotation.DeleteMapping;
 	import org.springframework.web.bind.annotation.GetMapping;
-	import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 	import org.springframework.web.bind.annotation.RequestBody;
 	import org.springframework.web.bind.annotation.RequestMapping;
 	import org.springframework.web.bind.annotation.RequestParam;
@@ -21,11 +27,15 @@ import br.com.mgk.Estagio.Repository.ProdutoRepository;
 import br.com.mgk.Estagio.model.Categoria;
 import br.com.mgk.Estagio.model.Marca;
 import br.com.mgk.Estagio.model.Produto;
+import net.sf.jasperreports.engine.JRException;
+
+
 
 
 	@Controller
 	@CrossOrigin(origins = "localhost:8000")
 	public class ProdutoController {
+
 
 		@Autowired 
 		private static String caminhoImagens = "C://IMAGENS SITE/";
@@ -38,6 +48,7 @@ import br.com.mgk.Estagio.model.Produto;
 		@Autowired /* IC/CD ou CDI - Injeção de dependencia */
 		private ProdutoRepository produtoRepository;
 		
+
 		@RequestMapping(value ="/produto")
 		public String produto(Model model) {
 			List<Categoria> catelist = categoriaRepository.findAll();

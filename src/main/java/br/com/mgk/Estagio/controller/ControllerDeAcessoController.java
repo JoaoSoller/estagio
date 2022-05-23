@@ -36,7 +36,7 @@ public class ControllerDeAcessoController {
 		Usuario usuarios = usuarioRepository.buscarPorLogin(login);
 		if(usuarios!= null && usuarios.getLogin().equals(login)==true && usuarios.getSenha().equals(senha)==true)
 		{
-			return "principal.html";
+			return "acesso.html";
 		}
 		else
 		{	

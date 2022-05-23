@@ -25,6 +25,7 @@ import br.com.mgk.Estagio.Repository.UsuarioRepository;
  * A sample greetings controller to return greeting text
  */
 
+
 @RestController
 public class UsuarioController {
 
@@ -115,5 +116,6 @@ public class UsuarioController {
 
 		return new ResponseEntity<List<Usuario>>(usuario, HttpStatus.OK);
 	}
+	
 	
 }

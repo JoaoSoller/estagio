@@ -20,4 +20,11 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>{
 	
 	@Query("Select u from Categoria u WHERE u.id=:categoria")
 	Categoria buscarPorCategoria(long categoria);
+	
+	@Query(value = "select u from Produto u order by qnt_venda desc ")
+	List<Produto>buscarABC(); 
+	
+	@Query(value = "select u from Produto u where upper(trim(u.nome)) like %?1% order by qnt_venda desc ")
+	List<Produto>buscarABCLike(String name); 
+	
 }

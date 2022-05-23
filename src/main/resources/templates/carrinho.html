@@ -152,8 +152,8 @@
 									role="button"><i class="fa fa-minus"></i>---</a></td>
 							
 								<td class="text-right" th:text="${item.valorUnitario}"></td>
-								<td class="text-right" th:text="${item.desconto}"></td>
-								<td class="text-right" th:text="${item.valorTotal}"></td>								
+								<td class="text-right" th:text="${item.txtdesconto}"></td>
+								<td class="text-right" th:text="${item.txtvalortotal}"></td>								
 								<td class="text-right"><a class="btn btn-sm btn-danger"
 									th:href="@{/removerProduto/{id}(id=${item.produto.id})}"
 									role="button"><i class="fa fa-trash"></i>Excluir</a></td>
@@ -167,7 +167,7 @@
 								<td></td>
 								<td></td>
 								<td>Sub-Total</td>
-								<td class="text-right"><span th:text="${pedido.valorTotal}"></span></td>
+								<td class="text-right"><span th:text="${pedido.txtvalortotal}"></span></td>
 							</tr>
 							<tr>
 								<td></td>
@@ -188,7 +188,7 @@
 								<td></td>
 								<td>Desconto</td>
 								<td class="text-right"><span
-										th:text="${pedido.desconto}"></td>
+										th:text="${pedido.txtdesconto}"></td>
 							</tr>
 						
 						</tbody>

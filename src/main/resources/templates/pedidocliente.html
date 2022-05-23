@@ -31,42 +31,33 @@ html {
       <th scope="col">CIDADE</th>
       <th scope="col">VALOR TOTAL</th>
       <th scope="col">STATUS</th>
+       <th scope="col">Motivo Solicitado </th>
+      <th scope="col">Solicitar Cancelamento</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th th:text="*{id}">1</th>
-      <td th:text="*{cliente.endereco}">Mark</td>
-      <td th:text="*{cliente.cep}">Cep</td>
+      <th th:text="*{id}"></th>
+      <td th:text="*{cliente.endereco}"></td>
+      <td th:text="*{cliente.cep}"></td>
       <td  th:text="*{cliente.cidade}"></td>
       <td  th:text="*{valorTotal}"></td>
       <td  th:text="*{status}"></td>
+      <td  th:text="*{motivo}"></td>
+      <td><a class="btn btn-primary" 
+									href="/motivo"
+									><i class="bi bi-plus-lg"></i>Solicitar
+									        </a></td>
     </tr>
   
   </tbody>
 </table>
+
+<a class="btn btn-primary" href="/carrinho">Voltar para o Carrinho</a>
 <div class="mb-3">
 
 </div>
- <div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
- <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Deseja Cancelar o pedido?</h5>
-     
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Atencao quando cancelar o pedido nao sera possivel desfazer.</p>
-      </div>
-      <div class="modal-footer">
-           <a type="submit" class="btn btn-primary" th:href="@{/cancela/{id}(id=${id})}">Cancelar Pedido</a>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+
  </div>
  
 
@@ -93,7 +84,28 @@ html {
 		</tbody>
 	</table>
 
-
+<div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cancelar de solicitacao</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="nameBusca" class="col-form-label">Informe o motivo:</label>
+            <input type="text" class="form-control" id="motivo" onchange="minhafuncao();">
+          </div>
+         <a class="btn btn-primary" href="salvapedinovo">Confirmar</a>
+        </form>
+	</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -102,6 +114,22 @@ html {
 
 
 <script type="text/javascript">
+	
+	function minhafuncao()	
+	{
+		  var motivo = $('#motivo').val();
+		
+  
+	$.ajax({
+				method : "GET",
+				url : "mudarmotivoatual",
+				data : "motivo=" + motivo ,
+				success : function(response) {
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar produto: " + xhr.responseText);
+			});	
+	}
 	
 	function pesquisarPedido(){
 	  $.ajax({

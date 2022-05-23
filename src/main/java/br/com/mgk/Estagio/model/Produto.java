@@ -32,7 +32,14 @@ private static final long serialVersionUID = 1L;
 	private Double altura = 0.0;
 	private Double largura = 0.0;
 	private Double diametro = 0.0;
+	private int qnt_venda =0;
 	
+	public int getQnt_venda() {
+		return qnt_venda;
+	}
+	public void setQnt_venda(int qnt_venda) {
+		this.qnt_venda = qnt_venda;
+	}
 	public String getPeso() {
 		return peso;
 	}

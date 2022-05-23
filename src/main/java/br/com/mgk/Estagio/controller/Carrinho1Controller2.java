@@ -50,6 +50,8 @@ public class Carrinho1Controller2 {
 	private List<PromocaoItens> promocaoItens = new ArrayList<PromocaoItens>();
 	private List<Promocao> promocoes = new ArrayList<Promocao>();
 	private Pedido pedido = new Pedido();
+	private String motivo="teste";
+	private Pedido pedidoaux = new Pedido();
 	private Cliente cliente;
 	private String cep= " ";
 	private long modo= new Long(0);
@@ -60,6 +62,8 @@ public class Carrinho1Controller2 {
 	private double fretefim = 0.0;
 	private double total = 0.0;
 	private String id;
+	private String datalolfim;
+	
 	@Autowired
 	private ProdutoRepository produtoRepositorio;
 	
@@ -82,6 +86,8 @@ public class Carrinho1Controller2 {
 	private PedidoItensRepository PedidosItensrepositorio;
 	private Boolean ex;
 
+
+
 	
 	private double calcularTotal() {
 		double total=0;
@@ -89,7 +95,10 @@ public class Carrinho1Controller2 {
 		for (PedidoItens it : pedidosItens) {
 			pedido.setValorTotal(pedido.getValorTotal() + (it.getValorUnitario() * it.getQuantidade()));
 			total += pedido.getValorTotal();
+			
 		}
+		String valorFormatado = new DecimalFormat("#.##").format(pedido.getValorTotal());
+		pedido.setTxtvalortotal(valorFormatado);
 		this.total = total;
 		return total;
 	}
@@ -210,7 +219,7 @@ public class Carrinho1Controller2 {
 			Pedido pedidonovo;
 			List<PedidoItens> pedidositens = PedidosItensrepositorio.buscarPorPedido(id);
 			pedidonovo = pedidorepositorio.getById(id);
-	
+			pedidoaux = pedidonovo;
 			ModelAndView mv = new ModelAndView("pedidocliente");
 			mv.addObject("pedido", pedidonovo);
 			mv.addObject("listaPedido", listapedidonova);
@@ -220,6 +229,30 @@ public class Carrinho1Controller2 {
 			// System.out.println(compra.getValorTotal());
 			return mv;
 	}
+	
+	@GetMapping(value = "/mudarmotivoatual") /* mapeia a url */
+	@ResponseBody
+	public void novomotivo(@RequestParam(name = "motivo") String motivo) { /* Recebe os dados para consultar */
+		this.motivo=motivo;
+	}
+	
+	@GetMapping(value = "/salvapedinovo")
+	@ResponseBody
+	public ModelAndView novosalva() {
+		pedidoaux.setMotivo(motivo);
+		pedidorepositorio.saveAndFlush(pedidoaux);
+		pedidocliente();
+		List<PedidoItens> pedidositens = PedidosItensrepositorio.buscarPorPedido(pedidoaux.getId());
+		ModelAndView mv = new ModelAndView("pedidocliente");
+		mv.addObject("pedido", pedidoaux);
+		mv.addObject("listaPedido", listapedidonova);
+		mv.addObject("cliente", pedidoaux.getCliente());
+		mv.addObject("valor",pedido.getFrete() );
+		mv.addObject("Totalvenda",pedido.getValorTotal());
+		// System.out.println(compra.getValorTotal());
+		return mv;
+	}
+	
 	@GetMapping("/pedidocliente")
 	public ModelAndView pedidocliente(){
 		buscarUsuarioLogado();
@@ -261,6 +294,8 @@ public class Carrinho1Controller2 {
 			//pedido.setValorTotal(this.total);
 			pedido.setCliente(cliente);
 			pedido.setStatus("Em preparacao");
+			cliente.setValorcomprado(cliente.getValorcomprado()+pedido.getValorFinal());
+			repositorioCliente.saveAndFlush(cliente);
 			pedidorepositorio.save(pedido);
 			for (PedidoItens item : pedidosItens) {
 				item.setPedido(pedido);
@@ -268,8 +303,10 @@ public class Carrinho1Controller2 {
 				Optional <Produto> prod = produtoRepositorio.findById(item.getProduto().getId());
 				Produto produto = prod.get();
 				produto.setQuantidadeEstoque(produto.getQuantidadeEstoque()-item.getQuantidade());
+				produto.setQnt_venda(produto.getQnt_venda()+item.getQuantidade());
 				produtoRepositorio.saveAndFlush(produto);
 			}
+			
 			SecurityContextHolder.clearContext();
 			pedido = new Pedido();
 			pedidosItens =  new ArrayList<PedidoItens>();
@@ -342,14 +379,19 @@ public class Carrinho1Controller2 {
 		ModelAndView mv = new ModelAndView("finalizar");
 		// System.out.println(compra.getValorTotal());
 		
-		
+	
 		mv.addObject("listaItens", pedidosItens);
+	
 		mv.addObject("cliente", cliente);
 		calcularfrete(cliente.getCep()); 
 		mv.addObject("prazo", prazo);
 		mv.addObject("valor",fretefim );	
 		pedido.setValorTotal(this.total);
+		String valorFormatado = new DecimalFormat("#.##").format(pedido.getValorTotal());
+		pedido.setTxtvalortotal(valorFormatado);
 		pedido.setValorFinal(this.total+fretefim-pedido.getDesconto());
+		valorFormatado = new DecimalFormat("#.##").format(pedido.getValorFinal());
+		pedido.setTxtvalorfinal(valorFormatado);
 		mv.addObject("Totalvenda", fretefim + this.total);
 		mv.addObject("pedido", pedido);
 		return mv;
@@ -399,6 +441,10 @@ public class Carrinho1Controller2 {
 		calcularTotal();
 		// System.out.println(compra.getValorTotal());
 		mv.addObject("pedido", pedido);
+		for (PedidoItens produto : pedidosItens) {
+			String valorFormatado = new DecimalFormat("#.##").format(produto.getValorTotal());//OPA
+			produto.setTxtvalortotal(valorFormatado);
+		}
 		mv.addObject("listaItens", pedidosItens);
 		return mv;
 	}
@@ -416,11 +462,15 @@ public class Carrinho1Controller2 {
 					it.setQuantidade(it.getQuantidade() + 1);
 					it.setValorTotal(0.);
 					it.setValorTotal(it.getValorTotal() + (it.getQuantidade() * it.getValorUnitario()));
+					String valorFormatado = new DecimalFormat("#.##").format(it.getQuantidade() * it.getValorUnitario());
+					it.setTxtvalortotal(valorFormatado);
 					calcularTotal();
 				} else if (acao == 0 && it.getQuantidade() != 1) {
 					it.setQuantidade(it.getQuantidade() - 1);
 					it.setValorTotal(0.);
 					it.setValorTotal(it.getValorTotal() + (it.getQuantidade() * it.getValorUnitario()));
+					String valorFormatado = new DecimalFormat("#.##").format(it.getQuantidade() * it.getValorUnitario());
+					it.setTxtvalortotal(valorFormatado);
 					calcularTotal();
 				}
 				a++;
@@ -438,7 +488,11 @@ public class Carrinho1Controller2 {
 				pedidosItens.remove(it);
 				it.setValorTotal(0.);
 				it.setValorTotal(it.getValorTotal() + (it.getQuantidade() * it.getValorUnitario()));
+				String valorFormatado = new DecimalFormat("#.##").format(it.getValorTotal());
+				it.setTxtvalortotal(valorFormatado);
 				pedido.setDesconto(pedido.getDesconto()-it.getDesconto());
+				valorFormatado = new DecimalFormat("#.##").format(pedido.getDesconto());
+				pedido.setTxtdesconto(valorFormatado);
 				break;
 			}
 		}
@@ -471,6 +525,10 @@ public class Carrinho1Controller2 {
 								item.setDesconto(0.0);
 							pedido.setDesconto(pedido.getDesconto()+up.getDesconto());
 							item.setDesconto(up.getDesconto());
+							String valorFormatado = new DecimalFormat("#.##").format(item.getDesconto());
+							item.setTxtdesconto(valorFormatado);
+							valorFormatado = new DecimalFormat("#.##").format(pedido.getDesconto());
+							pedido.setTxtdesconto(valorFormatado);
 						}
 					}
 				}
@@ -486,6 +544,8 @@ public class Carrinho1Controller2 {
 				controle = 1;
 				String valorFormatado = new DecimalFormat("0.##").format(it.getValorTotal());
 				it.setValorTotal(Double.valueOf(valorFormatado).doubleValue()-it.getDesconto());
+				valorFormatado = new DecimalFormat("#.##").format(it.getValorTotal());
+				it.setTxtvalortotal(valorFormatado);
 			}
 			else 
 			if((it.getProduto().getId() == produto.getId() && it.getProduto().getQuantidadeEstoque()==it.getQuantidade()))
@@ -499,6 +559,8 @@ public class Carrinho1Controller2 {
 			item.setValorTotal(item.getValorTotal() + (item.getQuantidade() * item.getValorUnitario()));
 			String valorFormatado = new DecimalFormat("0.##").format(item.getValorTotal());
 			item.setValorTotal(Double.valueOf(valorFormatado).doubleValue()-item.getDesconto());
+			valorFormatado = new DecimalFormat("#.##").format(item.getValorTotal());
+			item.setTxtvalortotal(valorFormatado);
 			pedidosItens.add(item);
 		}
 		controle = 0;
@@ -620,11 +682,21 @@ public class Carrinho1Controller2 {
 	
 	@GetMapping(value = "buscarPorPedidoNovo") /* mapeia a url */
 	@ResponseBody /* Descricao da resposta */
-	public ResponseEntity<List<Pedido>>  buscarPorPedido() { /* Recebe os dados para consultar */
+	public ResponseEntity<List<Pedido>>  buscarPorPedido(@RequestParam(name = "datalol") String  datalol) { /* Recebe os dados para consultar */
 		
 		List<Pedido> usuario = pedidorepositorio.findAll();
 
 		return new ResponseEntity<List<Pedido>>(usuario, HttpStatus.OK);
+	}
+	@GetMapping(value = "buscarPorPedidoVelho") /* mapeia a url */
+	@ResponseBody /* Descricao da resposta */
+	public ResponseEntity<List<Pedido>> buscarPorPedidoVelho(@RequestParam(name = "datalol") String  datalol) { /* Recebe os dados para consultar */
+		
+		List<Pedido> usuario = pedidorepositorio.findAll();
+
+		return new ResponseEntity<List<Pedido>>(usuario, HttpStatus.OK);
+
+		
 	}
 	
 	@GetMapping(value = "buscarPorPromocaoFiltro") /* mapeia a url */

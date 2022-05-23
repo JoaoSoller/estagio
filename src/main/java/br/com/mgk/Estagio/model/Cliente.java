@@ -28,6 +28,7 @@ public class Cliente {
 	private String login;
 	private String senha;
 	private String cep;
+	private Double valorcomprado =0.0;
 	
 	
 	public String getCep() {
@@ -89,6 +90,12 @@ public class Cliente {
 	}
 	public void setDtnascimento(Date dtnascimento) {
 		this.dtnasc = dtnascimento;
+	}
+	public Double getValorcomprado() {
+		return valorcomprado;
+	}
+	public void setValorcomprado(Double valorcomprado) {
+		this.valorcomprado = valorcomprado;
 	}
 
 }

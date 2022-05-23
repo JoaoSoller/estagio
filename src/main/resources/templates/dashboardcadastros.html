@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="css/Dashboard.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<section>
+	<div class="sidebar">
+		<h1 class="logo">MGK DIESEL</h1>
+
+		<ul class="nav">
+			<li><a href="/dashboard"><i class="fa fa-windows"></i> Dashboard</a></li>
+			<li class="active"><a href="/dashboardcadastros"><i class="fa fa-shopping-bag"></i> Cadastro</a></li>
+			<li><a href="/dashboardrelatorio"><i class="fa fa-pie-chart"></i> Relatorio</a></li>
+			<li><a href="/dashboardmovimentacao"><i class="fa fa-cube"></i> Movimentacao</a></li>
+			<li><a href="/inicio-tcc"><i class="fa fa-tag"></i> Pagina de Vendas </a></li>
+
+		</ul>
+
+		
+
+	</div>
+	<div class="main">
+		
+		<div class="head-section">
+			<div class="col-6">
+				<h2>Admin Dashboard</h2>
+				<p>Pagina administrativa</p>
+			</div>
+
+					
+		
+
+	</div><br><br>
+		<br><br>
+		<div class="content">
+			<p>Tabela de Links</p><br><br>
+
+
+			<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Cadastros</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td><a href="/categoria">Categoria</a></td>
+   
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td><a class="nav-link" href="/contato">Contato</a></td>
+    
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td><a class="nav-link" href="/fornecedor">Fornecedor</a></td>
+  
+    </tr>
+    <tr>
+      <th scope="row">4</th>
+      <td><a class="nav-link" href="/funcionario">Funcionario</a></td>
+   
+    </tr>
+    <tr>
+      <th scope="row">5</th>
+      <td><a class="nav-link" href="/marca">Marca</a> </td>
+    
+    </tr>
+    <tr>
+      <th scope="row">6</th>
+      <td><a class="nav-link" href="/produto">Produto</a></td>
+  
+    </tr>
+    <tr>
+      <th scope="row">7</th>
+      <td><a class="nav-link" href="/cliente">Cliente</a></td>
+  
+    </tr>
+  </tbody>
+</table>
+			
+		</div>
+
+
+
+	</div>
+</section>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  $(".user").click(function(){
+    $(".profile-div").toggle(1000);
+  });
+  $(".hicon:nth-child(1)").click(function(){
+    $(".notification-div").toggle(1000);
+  });
+  $(".sicon").click(function(){
+    $(".search").toggle(1000);
+  });
+});
+</script>
+
+<script type="text/javascript">
+	$('li').click(function(){
+    $('li').removeClass("active");
+    $(this).addClass("active");
+});
+
+
+
+	
+</script>
+</body>
+</html>

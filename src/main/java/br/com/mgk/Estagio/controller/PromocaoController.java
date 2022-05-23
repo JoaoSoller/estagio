@@ -32,6 +32,7 @@ import br.com.mgk.Estagio.model.Promocao;
 import br.com.mgk.Estagio.model.PromocaoItens;
 @Controller
 public class PromocaoController {
+	private String datalolfim;
 	private List<Promocao> promocoes;
 	private List<PromocaoItens> listapro = new ArrayList<PromocaoItens>();
 	private boolean ex;
@@ -219,13 +220,13 @@ public class PromocaoController {
 		{
 			if(acao.equals("salvar") || acao.equals("calcular"))
 			{
-				
+				  LocalDate date = LocalDate.now();
 				  LocalDate d1 = LocalDate.parse(promocao.getDtini());
 			      LocalDate d2 = LocalDate.parse(promocao.getDtfim());
-				if(d1.isAfter(d2))
+				if(d1.isAfter(d2) || d1.isBefore(date))
 				{
 					mv.addObject("promocao",promocao);
-					mv.addObject("erro","data fim menor que data inicio");
+					mv.addObject("erro","data fim menor que data inicio ou data inicio menor que hoje");
 					mv.addObject("promocao",promocao);
 					mv.addObject("listaPromocaoItens", this.listaPromocao);
 					return mv;
@@ -300,7 +301,11 @@ public class PromocaoController {
 		List<PromocaoItens> listaauxliar= new ArrayList<PromocaoItens>();
 		for (PromocaoItens upp : listaPromocao) {
 			upp.setDesconto(upp.getPrecoantigo()*(promocao.getPorcentagem()/100));	
+			String valorFormatado = new DecimalFormat("#.##").format(upp.getDesconto());
+			upp.setDescontomostra(valorFormatado);
 			upp.setPreconovo(upp.getPrecoantigo()-upp.getDesconto());
+			valorFormatado = new DecimalFormat("#.##").format(upp.getPreconovo());
+			upp.setPreco(valorFormatado);
 			listaauxliar.add(upp);
 			
 		}
@@ -350,10 +355,12 @@ public void buscarmarcaid(@RequestParam(name = "idproduto") Long idproduto, Mode
 		upp.setPromocao(promocao);
 		upp.setPrecoantigo(produto.getPreco());
 		upp.setDesconto(upp.getPrecoantigo()*(promocao.getPorcentagem()/100));
+		String valorFormatado = new DecimalFormat("#.##").format(upp.getDesconto());
+		upp.setDescontomostra(valorFormatado);
 		
 		upp.setPreconovo(upp.getPrecoantigo()-upp.getDesconto());
-		//String valorFormatado = new DecimalFormat("0.00").format(upp.getPreconovo());
-		//upp.setPreconovo(Double.valueOf(valorFormatado).doubleValue());
+		valorFormatado = new DecimalFormat("#.##").format(upp.getPreconovo());
+		upp.setPreco(valorFormatado);
 		listaauxliar.add(upp);
 		}
 	}
@@ -380,7 +387,13 @@ public ResponseEntity<List<Categoria>> buscarPorNome(@RequestParam(name = "name"
 @ResponseBody /* Descricao da resposta */
 public void  posfun(@RequestParam(name = "posfun") Long posfun) { /* Recebe os dados para consultar */
 	this.posfun=posfun;
-	}	
+}	
+
+@GetMapping(value = "promocao/entrada/mudardata") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public void  mudardata(@RequestParam(name = "datalolfim") String datalolfim) { /* Recebe os dados para consultar */
+	this.datalolfim=datalolfim;
+}	
 
 @GetMapping(value = "promocao/entrada/buscarListaItem") /* mapeia a url */
 @ResponseBody /* Descricao da resposta */
@@ -394,16 +407,26 @@ public ResponseEntity<List<PromocaoItens>>  buscarItens(@RequestParam(name = "id
 @GetMapping(value = "promocao/entrada/buscarPorPromocaoFiltro") /* mapeia a url */
 @ResponseBody /* Descricao da resposta */
 public ResponseEntity<List<Promocao>>  buscarPorCompraFiltro(@RequestParam(name = "datalol") String  datalol) { /* Recebe os dados para consultar */
+	 LocalDate d1; //= LocalDate.parse(promocao.getDtini());
+     LocalDate d2; //= LocalDate.parse(promocao.getDtfim());
+     LocalDate p1 = LocalDate.parse(datalol);
+     LocalDate p2 = LocalDate.parse(datalolfim);
+    
 	List<Promocao> nova =  new ArrayList<Promocao>();
 	List<Promocao> usuario = promocaoRepository.findAll();
-	for (Promocao compra : usuario) {	
-		if(compra.getDtini().equals(datalol)) {
+	for (Promocao compra : usuario) {
+		 d1 = LocalDate.parse(compra.getDtini());
+		 d2 = LocalDate.parse(compra.getDtfim()); 
+		//if(compra.getDtini().equals(datalol)) {
+		if((d1.isEqual(p1)|| d1.isAfter(p1)) && (d2.isEqual(p2) || d2.isBefore(p2))) {
 			nova.add(compra);
 		}		
 	}
 
 	return new ResponseEntity<List<Promocao>>(nova, HttpStatus.OK);
 }
+
+
 @GetMapping(value = "promocao/entrada/buscarmarcaid") /* mapeia a url */
 @ResponseBody /* Descricao da resposta */
 public ResponseEntity<Categoria> buscarmarcaid(@RequestParam(name = "idmarca") Long idmarca) { /* Recebe os dados para consultar */

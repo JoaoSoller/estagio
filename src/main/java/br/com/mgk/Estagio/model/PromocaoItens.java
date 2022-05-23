@@ -22,6 +22,8 @@ public class PromocaoItens {
 	private double precoantigo;
 	private double preconovo;
 	private double desconto;
+	private String descontomostra;
+	private String preco;
 	
 	public double getDesconto() {
 		return desconto;
@@ -58,6 +60,18 @@ public class PromocaoItens {
 	}
 	public void setPreconovo(double preconovo) {
 		this.preconovo = preconovo;
+	}
+	public String getPreco() {
+		return preco;
+	}
+	public void setPreco(String preco) {
+		this.preco = preco;
+	}
+	public String getDescontomostra() {
+		return descontomostra;
+	}
+	public void setDescontomostra(String descontomostra) {
+		this.descontomostra = descontomostra;
 	}
 	
 	

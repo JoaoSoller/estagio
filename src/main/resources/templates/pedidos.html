@@ -32,6 +32,7 @@ html {
       <th scope="col">CIDADE</th>
       <th scope="col">VALOR TOTAL</th>
       <th scope="col">STATUS</th>
+      <th scope="col">SOLICITACAO CANCELAMENTO</th>
     </tr>
   </thead>
   <tbody>
@@ -41,7 +42,8 @@ html {
       <td th:text="*{cliente.cep}">Cep</td>
       <td  th:text="*{cliente.cidade}"></td>
       <td  th:text="*{valorTotal}"></td>
-      <td  th:text="*{status}"></td>
+      <td  th:text="*{status}"> </td>
+      <td  th:text="*{motivo}"> </td>
     </tr>
   
   </tbody>
@@ -56,7 +58,8 @@ html {
 <a class="btn btn-danger"  data-bs-toggle="modal"
 								data-bs-target="#modalPesquisarUser"
 									role="button"><i class="bi bi-plus-lg"></i>Cancelar
-									        </a>
+									        </a><br>
+
  <div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
  <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -136,16 +139,22 @@ html {
 
 
 <script type="text/javascript">
-	
+
+
+
+
 	function pesquisarPedido(){
+	
+	 var datalol = $('#dtpesquisar').val();
 	  $.ajax({
 				method : "GET",
 				url : "buscarPorPedidoNovo",
-				data : " ",
+				data : "datalol=" + datalol,
 				success : function(response) {
 					$('#tabelaresultadosCompra > tbody > tr').remove();
 					
 					for (var i = 0; i < response.length; i++){
+					
 						$('#tabelaresultadosCompra > tbody').append
 						('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].valorTotal+'</td><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Ver</button></td>><td><button type="button" onclick="minhafuncao();colocarEmEdicaoCompra('+response[i].id+')" class="btn btn-primary">Remover</button></td></tr>');
 					}

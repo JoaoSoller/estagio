@@ -121,21 +121,21 @@
 									<td><span th:text="${item.quantidade}"></span></td>
 
 									<td class="text-right" th:text="${item.valorUnitario}"></td>
-									<td class="text-right" th:text="${item.desconto}"></td>
-									<td class="text-right" th:text="${item.valorTotal}"></td>
+									<td class="text-right" th:text="${item.txtdesconto}"></td>
+									<td class="text-right" th:text="${item.txtvalortotal}"></td>
 									<td class="text-right"></td>
 								</tr>
 
 								<tr>
 									<td></td>
 									<td></td>
-									<td></td>
+									<td><
 									<td></td>
 									<td></td>
 									<td></td>
 									<td>Sub-Total</td>
 									<td class="text-right"><span
-										th:text="${pedido.valorTotal}"></span></td>
+										th:text="${pedido.txtvalortotal}"></span></td>
 								</tr>
 									<tr>
 									<td></td>
@@ -146,7 +146,7 @@
 									<td></td>
 									<td>Desconto</td>
 									<td class="text-right"><span
-										th:text="${pedido.desconto}"></span></td>
+										th:text="${pedido.txtdesconto}"></span></td>
 								</tr>
 								<tr>
 									<td></td>
@@ -177,7 +177,7 @@
 									<td></td>
 									<td><strong>Total</strong></td>
 									<td class="text-right"><strong><span
-											th:text="${pedido.valorFinal}"></strong></td>
+											th:text="${pedido.txtvalorfinal}"></strong></td>
 								</tr>
 							</tbody>
 						</table>

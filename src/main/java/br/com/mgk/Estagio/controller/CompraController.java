@@ -32,7 +32,7 @@ import br.com.mgk.Estagio.model.Produto;
 
 @Controller
 public class CompraController {
-
+private String datalolfim;
 private long posfun= new Long(0);
 private long posfor = new Long(0);
 private Double compraaux = new Double(0.0);
@@ -78,6 +78,11 @@ public Double calculaTotal(List<CompraItens> lista) { /* Recebe os dados para co
 	return total;
 }
 
+@GetMapping(value = "compra/entrada/mudardata") /* mapeia a url */
+@ResponseBody /* Descricao da resposta */
+public void mudardata(@RequestParam(name = "datalolfim") String datalolfim) { /* Recebe os dados para consultar */
+	this.datalolfim=datalolfim;
+}	
 
 @PostMapping("compra/entrada/salvar") /* Nosso primeiro método de API */
 @ResponseBody /* Retorna os dados par ao corpo da resposta */
@@ -309,12 +314,19 @@ public ResponseEntity<List<Compra>>  buscarPorCompra() { /* Recebe os dados para
 @GetMapping(value = "compra/entrada/buscarPorCompraFiltro") /* mapeia a url */
 @ResponseBody /* Descricao da resposta */
 public ResponseEntity<List<Compra>>  buscarPorCompraFiltro(@RequestParam(name = "datalol") String  datalol) { /* Recebe os dados para consultar */
+	 LocalDate d1; //= LocalDate.parse(promocao.getDtini());
+     LocalDate d2; //= LocalDate.parse(promocao.getDtfim());
+     LocalDate p1 = LocalDate.parse(datalol);
+     LocalDate p2 = LocalDate.parse(datalolfim);
+    
 	List<Compra> nova =  new ArrayList<Compra>();
 	List<Compra> usuario = compraRepository.findAll();
 	for (Compra compra : usuario) {	
-		if(compra.getData().equals(datalol)) {
+		 d1 = LocalDate.parse(compra.getData());
+		//if(compra.getData().equals(datalol)) {
+		if((d1.isEqual(p1) ||d1.isAfter(p1))	&&  (d1.isEqual(p2) || d1.isBefore(p2)))	
 			nova.add(compra);
-		}		
+		//}		
 	}
 
 	return new ResponseEntity<List<Compra>>(nova, HttpStatus.OK);

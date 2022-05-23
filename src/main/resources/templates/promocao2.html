@@ -79,8 +79,8 @@ html {
 	  
 	 	   <td th:text="${entradaslol.produto.nome}"></td>
 	      	<td th:text="${entradaslol.precoantigo}"></td>
-	       <td th:text="${entradaslol.preconovo}"></td>
-	        <td th:text="${entradaslol.desconto}"></td>
+	       <td th:text="${entradaslol.preco}"></td>
+	        <td th:text="${entradaslol.Descontomostra}"></td>
 	      <td> 
                       <button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs" onclick="validar();">Remover</button>
           </td>
@@ -95,6 +95,7 @@ html {
 <button type="submit" class="btn btn-primary" id="salvar"  name="acao" th:value="salvar" onclick="limpar(); validar();">Salvar</button>
 <button type="submit" class="btn btn-primary" name="acao" th:value="xumbada" onclick="pesquisarPromocao();">Pesquisar</button>
 <button type="submit" class="btn btn-primary" name="acao" id="novo" th:value="novo">Novo</button>
+<a class="btn btn-primary" href="/dashboardmovimentacao"><i class="fa fa-shopping-bag"></i> Voltar Para o menu</a>
 
 
 
@@ -139,11 +140,14 @@ html {
 </div>
 
 <br>
-<label for="nome" class="form-label">Filtro por Data                :</label>
+<label for="nome" class="form-label">Filtro por Periodo                :</label><br>
+Inicio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       &nbsp;&nbsp;&nbsp;&nbsp;           &nbsp;&nbsp;&nbsp;&nbsp;           &nbsp;&nbsp;&nbsp;                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;              Fim<BR>
 <input type="date"   id="dtpesquisar"  required="required">
-<button type="submit" class="btn btn-primary" onclick="filtro(); minhafuncao();">Pesquisar</button>
 
-	
+<button class="btn btn-primary"></button>
+<input type="date"   id="dtpesquisarfim"   onchange="mudardata();" onchrequired="required">
+
+<button type="submit" class="btn btn-primary" onclick="filtro(); minhafuncao();">Pesquisar</button>
 
 <table class="table" id="tabelaresultadosCompra">
 		<thead>
@@ -402,7 +406,7 @@ function minhafuncao()
 							$('#tabelaItens > tbody > tr').remove();
 							for (var i = 0; i < response.length; i++){
 							$('#tabelaItens > tbody').append
-							('<tr id="'+response[i].id+'"><td>'+response[i].produto.nome+'</td><td>'+response[i].precoantigo+'</td><td>'+response[i].preconovo+'</td><td>'+response[i].desconto+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
+							('<tr id="'+response[i].id+'"><td>'+response[i].produto.nome+'</td><td>'+response[i].precoantigo+'</td><td>'+response[i].preco+'</td><td>'+response[i].Descontomostra+'</td><td><button type="submit" name="acao" th:value="remover"class="btn btn-primary btn-xs">Remover</button></td></tr>');
 							}
 				
 				}

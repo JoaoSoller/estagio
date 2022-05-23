@@ -23,7 +23,8 @@ import javax.persistence.SequenceGenerator;
 		private Pedido pedido;
 		private Integer quantidade = 0;
 		private Double valorUnitario=0.0;
-
+		private String txtvalortotal=" ";
+		private String txtdesconto="0.0";
 		private Double desconto=0.0;
 		private Double acrescimo=0.0;
 		private Double ValorTotal= 0.0;
@@ -79,6 +80,20 @@ import javax.persistence.SequenceGenerator;
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
+	
+		public String getTxtdesconto() {
+			return txtdesconto;
+		}
+		public void setTxtdesconto(String txtdesconto) {
+			this.txtdesconto = txtdesconto;
+		}
+		public String getTxtvalortotal() {
+			return txtvalortotal;
+		}
+		public void setTxtvalortotal(String txtvalortotal) {
+			this.txtvalortotal = txtvalortotal;
+		}
+	
 		
 		
 }

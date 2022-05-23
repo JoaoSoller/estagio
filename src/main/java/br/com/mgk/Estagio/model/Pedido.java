@@ -27,9 +27,19 @@ private static final long serialVersionUID = 1L;
 	private Double valorTotal=0.0;
 	private String numerocartao;
 	private String status;
+	private String motivo;
 	private Double desconto = 0.0;
 	private Double valorFinal=0.0;
+	private String txtdesconto="0.0";
+	private String txtvalorfinal="0.0";
+	private String txtvalortotal="0.0";
 	
+	public String getMotivo() {
+		return motivo;
+	}
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
+	}
 	public Double getValorFinal() {
 		return valorFinal;
 	}
@@ -86,6 +96,24 @@ private static final long serialVersionUID = 1L;
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getTxtdesconto() {
+		return txtdesconto;
+	}
+	public void setTxtdesconto(String txtdesconto) {
+		this.txtdesconto = txtdesconto;
+	}
+	public String getTxtvalorfinal() {
+		return txtvalorfinal;
+	}
+	public void setTxtvalorfinal(String txtvalorFinal) {
+		this.txtvalorfinal = txtvalorFinal;
+	}
+	public String getTxtvalortotal() {
+		return txtvalortotal;
+	}
+	public void setTxtvalortotal(String txtvalorTotal) {
+		this.txtvalortotal = txtvalorTotal;
 	}
 	
 	

@@ -14,4 +14,5 @@ public interface PedidoItensRepository  extends JpaRepository<PedidoItens, Long>
 	
 	@Query(value = "select u from pedido_itens u where pedido_id=:id")
 	List<PedidoItens>buscarPorPedido(long id);	
+
 }
